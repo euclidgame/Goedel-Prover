@@ -1,0 +1,413 @@
+INFO 02-03 02:23:38 config.py:905] Defaulting to use mp for distributed inference
+INFO 02-03 02:23:38 llm_engine.py:237] Initializing an LLM engine (v0.6.3.post1) with config: model='deepseek-ai/DeepSeek-R1-Distill-Qwen-32B', speculative_config=None, tokenizer='deepseek-ai/DeepSeek-R1-Distill-Qwen-32B', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, override_neuron_config=None, rope_scaling=None, rope_theta=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.bfloat16, max_seq_len=4096, download_dir=None, load_format=LoadFormat.AUTO, tensor_parallel_size=4, pipeline_parallel_size=1, disable_custom_all_reduce=False, quantization=None, enforce_eager=False, kv_cache_dtype=auto, quantization_param_path=None, device_config=cuda, decoding_config=DecodingConfig(guided_decoding_backend='outlines'), observability_config=ObservabilityConfig(otlp_traces_endpoint=None, collect_model_forward_time=False, collect_model_execute_time=False), seed=1, served_model_name=deepseek-ai/DeepSeek-R1-Distill-Qwen-32B, num_scheduler_steps=1, chunked_prefill_enabled=False multi_step_stream_outputs=True, enable_prefix_caching=False, use_async_output_proc=True, use_cached_outputs=False, mm_processor_kwargs=None)
+WARNING 02-03 02:23:38 multiproc_gpu_executor.py:53] Reducing Torch parallelism from 192 threads to 1 to avoid unnecessary CPU contention. Set OMP_NUM_THREADS in the external environment to tune this value as needed.
+INFO 02-03 02:23:38 custom_cache_manager.py:17] Setting Triton cache manager to: vllm.triton_utils.custom_cache_manager:CustomCacheManager
+[1;36m(VllmWorkerProcess pid=2758984)[0;0m INFO 02-03 02:23:39 multiproc_worker_utils.py:215] Worker ready; awaiting tasks
+[1;36m(VllmWorkerProcess pid=2758983)[0;0m INFO 02-03 02:23:39 multiproc_worker_utils.py:215] Worker ready; awaiting tasks
+[1;36m(VllmWorkerProcess pid=2758982)[0;0m INFO 02-03 02:23:39 multiproc_worker_utils.py:215] Worker ready; awaiting tasks
+[1;36m(VllmWorkerProcess pid=2758983)[0;0m INFO 02-03 02:23:50 utils.py:1008] Found nccl from library libnccl.so.2
+INFO 02-03 02:23:50 utils.py:1008] Found nccl from library libnccl.so.2
+[1;36m(VllmWorkerProcess pid=2758983)[0;0m INFO 02-03 02:23:50 pynccl.py:63] vLLM is using nccl==2.20.5
+INFO 02-03 02:23:50 pynccl.py:63] vLLM is using nccl==2.20.5
+[1;36m(VllmWorkerProcess pid=2758984)[0;0m INFO 02-03 02:23:50 utils.py:1008] Found nccl from library libnccl.so.2
+[1;36m(VllmWorkerProcess pid=2758984)[0;0m INFO 02-03 02:23:50 pynccl.py:63] vLLM is using nccl==2.20.5
+[1;36m(VllmWorkerProcess pid=2758982)[0;0m INFO 02-03 02:23:50 utils.py:1008] Found nccl from library libnccl.so.2
+[1;36m(VllmWorkerProcess pid=2758982)[0;0m INFO 02-03 02:23:50 pynccl.py:63] vLLM is using nccl==2.20.5
+INFO 02-03 02:23:57 custom_all_reduce_utils.py:204] generating GPU P2P access cache in /home/wenjiema/.cache/vllm/gpu_p2p_access_cache_for_2,3,4,5.json
+INFO 02-03 02:24:32 custom_all_reduce_utils.py:242] reading GPU P2P access cache from /home/wenjiema/.cache/vllm/gpu_p2p_access_cache_for_2,3,4,5.json
+[1;36m(VllmWorkerProcess pid=2758983)[0;0m INFO 02-03 02:24:32 custom_all_reduce_utils.py:242] reading GPU P2P access cache from /home/wenjiema/.cache/vllm/gpu_p2p_access_cache_for_2,3,4,5.json
+[1;36m(VllmWorkerProcess pid=2758984)[0;0m INFO 02-03 02:24:32 custom_all_reduce_utils.py:242] reading GPU P2P access cache from /home/wenjiema/.cache/vllm/gpu_p2p_access_cache_for_2,3,4,5.json
+[1;36m(VllmWorkerProcess pid=2758982)[0;0m INFO 02-03 02:24:32 custom_all_reduce_utils.py:242] reading GPU P2P access cache from /home/wenjiema/.cache/vllm/gpu_p2p_access_cache_for_2,3,4,5.json
+INFO 02-03 02:24:32 shm_broadcast.py:241] vLLM message queue communication handle: Handle(connect_ip='127.0.0.1', local_reader_ranks=[1, 2, 3], buffer=<vllm.distributed.device_communicators.shm_broadcast.ShmRingBuffer object at 0x7f8b15891120>, local_subscribe_port=43695, remote_subscribe_port=None)
+INFO 02-03 02:24:33 model_runner.py:1056] Starting to load model deepseek-ai/DeepSeek-R1-Distill-Qwen-32B...
+[1;36m(VllmWorkerProcess pid=2758983)[0;0m INFO 02-03 02:24:33 model_runner.py:1056] Starting to load model deepseek-ai/DeepSeek-R1-Distill-Qwen-32B...
+[1;36m(VllmWorkerProcess pid=2758982)[0;0m INFO 02-03 02:24:33 model_runner.py:1056] Starting to load model deepseek-ai/DeepSeek-R1-Distill-Qwen-32B...
+[1;36m(VllmWorkerProcess pid=2758984)[0;0m INFO 02-03 02:24:33 model_runner.py:1056] Starting to load model deepseek-ai/DeepSeek-R1-Distill-Qwen-32B...
+[1;36m(VllmWorkerProcess pid=2758982)[0;0m INFO 02-03 02:24:33 weight_utils.py:243] Using model weights format ['*.safetensors']
+[1;36m(VllmWorkerProcess pid=2758983)[0;0m INFO 02-03 02:24:33 weight_utils.py:243] Using model weights format ['*.safetensors']
+[1;36m(VllmWorkerProcess pid=2758984)[0;0m INFO 02-03 02:24:34 weight_utils.py:243] Using model weights format ['*.safetensors']
+INFO 02-03 02:24:34 weight_utils.py:243] Using model weights format ['*.safetensors']
+[1;36m(VllmWorkerProcess pid=2758982)[0;0m INFO 02-03 02:24:40 model_runner.py:1067] Loading model weights took 15.4136 GB
+[1;36m(VllmWorkerProcess pid=2758983)[0;0m INFO 02-03 02:24:40 model_runner.py:1067] Loading model weights took 15.4136 GB
+[1;36m(VllmWorkerProcess pid=2758984)[0;0m INFO 02-03 02:24:41 model_runner.py:1067] Loading model weights took 15.4136 GB
+INFO 02-03 02:24:41 model_runner.py:1067] Loading model weights took 15.4136 GB
+INFO 02-03 02:24:48 distributed_gpu_executor.py:57] # GPU blocks: 49241, # CPU blocks: 8192
+INFO 02-03 02:24:48 distributed_gpu_executor.py:61] Maximum concurrency for 4096 tokens per request: 192.35x
+[1;36m(VllmWorkerProcess pid=2758984)[0;0m INFO 02-03 02:24:55 model_runner.py:1395] Capturing the model for CUDA graphs. This may lead to unexpected consequences if the model is not static. To run the model in eager mode, set 'enforce_eager=True' or use '--enforce-eager' in the CLI.
+[1;36m(VllmWorkerProcess pid=2758984)[0;0m INFO 02-03 02:24:55 model_runner.py:1399] CUDA graphs can take additional 1~3 GiB memory per GPU. If you are running out of memory, consider decreasing `gpu_memory_utilization` or enforcing eager mode. You can also reduce the `max_num_seqs` as needed to decrease memory usage.
+[1;36m(VllmWorkerProcess pid=2758982)[0;0m INFO 02-03 02:24:55 model_runner.py:1395] Capturing the model for CUDA graphs. This may lead to unexpected consequences if the model is not static. To run the model in eager mode, set 'enforce_eager=True' or use '--enforce-eager' in the CLI.
+[1;36m(VllmWorkerProcess pid=2758982)[0;0m INFO 02-03 02:24:55 model_runner.py:1399] CUDA graphs can take additional 1~3 GiB memory per GPU. If you are running out of memory, consider decreasing `gpu_memory_utilization` or enforcing eager mode. You can also reduce the `max_num_seqs` as needed to decrease memory usage.
+[1;36m(VllmWorkerProcess pid=2758983)[0;0m INFO 02-03 02:24:55 model_runner.py:1395] Capturing the model for CUDA graphs. This may lead to unexpected consequences if the model is not static. To run the model in eager mode, set 'enforce_eager=True' or use '--enforce-eager' in the CLI.
+[1;36m(VllmWorkerProcess pid=2758983)[0;0m INFO 02-03 02:24:55 model_runner.py:1399] CUDA graphs can take additional 1~3 GiB memory per GPU. If you are running out of memory, consider decreasing `gpu_memory_utilization` or enforcing eager mode. You can also reduce the `max_num_seqs` as needed to decrease memory usage.
+INFO 02-03 02:24:55 model_runner.py:1395] Capturing the model for CUDA graphs. This may lead to unexpected consequences if the model is not static. To run the model in eager mode, set 'enforce_eager=True' or use '--enforce-eager' in the CLI.
+INFO 02-03 02:24:55 model_runner.py:1399] CUDA graphs can take additional 1~3 GiB memory per GPU. If you are running out of memory, consider decreasing `gpu_memory_utilization` or enforcing eager mode. You can also reduce the `max_num_seqs` as needed to decrease memory usage.
+[1;36m(VllmWorkerProcess pid=2758984)[0;0m INFO 02-03 02:25:17 custom_all_reduce.py:233] Registering 4515 cuda graph addresses
+INFO 02-03 02:25:17 custom_all_reduce.py:233] Registering 4515 cuda graph addresses
+[1;36m(VllmWorkerProcess pid=2758982)[0;0m INFO 02-03 02:25:17 custom_all_reduce.py:233] Registering 4515 cuda graph addresses
+[1;36m(VllmWorkerProcess pid=2758983)[0;0m INFO 02-03 02:25:17 custom_all_reduce.py:233] Registering 4515 cuda graph addresses
+[1;36m(VllmWorkerProcess pid=2758983)[0;0m INFO 02-03 02:25:18 model_runner.py:1523] Graph capturing finished in 22 secs.
+[1;36m(VllmWorkerProcess pid=2758982)[0;0m INFO 02-03 02:25:18 model_runner.py:1523] Graph capturing finished in 22 secs.
+INFO 02-03 02:25:18 model_runner.py:1523] Graph capturing finished in 22 secs.
+[1;36m(VllmWorkerProcess pid=2758984)[0;0m INFO 02-03 02:25:18 model_runner.py:1523] Graph capturing finished in 23 secs.
+Outputing to results/minif2f/DeepSeek-R1-Distill-Qwen-32B-Thinking/full_records.json
+Outputing to results/minif2f/DeepSeek-R1-Distill-Qwen-32B-Thinking/to_inference_codes.json
+ERROR 02-03 03:04:37 multiproc_worker_utils.py:116] Worker VllmWorkerProcess pid 2758984 died, exit code: -15
+INFO 02-03 03:04:37 multiproc_worker_utils.py:120] Killing local vLLM worker processes
+Complete launching 128 LeanServerProcesses
+TaskQueue-verifier:  2669 requests popped with avg batch_size 1.0 in last period  5139 waiting in queue
+TaskQueue-verifier:  2793 requests popped with avg batch_size 1.0 in last period  2346 waiting in queue
+TaskQueue-verifier:  2346 requests popped with avg batch_size 1.0 in last period  0 waiting in queue
+All 128 LeanServerProcesses stopped
+INFO 02-03 03:13:01 config.py:905] Defaulting to use mp for distributed inference
+INFO 02-03 03:13:01 llm_engine.py:237] Initializing an LLM engine (v0.6.3.post1) with config: model='deepseek-ai/DeepSeek-R1-Distill-Qwen-32B', speculative_config=None, tokenizer='deepseek-ai/DeepSeek-R1-Distill-Qwen-32B', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, override_neuron_config=None, rope_scaling=None, rope_theta=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.bfloat16, max_seq_len=4096, download_dir=None, load_format=LoadFormat.AUTO, tensor_parallel_size=4, pipeline_parallel_size=1, disable_custom_all_reduce=False, quantization=None, enforce_eager=False, kv_cache_dtype=auto, quantization_param_path=None, device_config=cuda, decoding_config=DecodingConfig(guided_decoding_backend='outlines'), observability_config=ObservabilityConfig(otlp_traces_endpoint=None, collect_model_forward_time=False, collect_model_execute_time=False), seed=1, served_model_name=deepseek-ai/DeepSeek-R1-Distill-Qwen-32B, num_scheduler_steps=1, chunked_prefill_enabled=False multi_step_stream_outputs=True, enable_prefix_caching=False, use_async_output_proc=True, use_cached_outputs=False, mm_processor_kwargs=None)
+WARNING 02-03 03:13:02 multiproc_gpu_executor.py:53] Reducing Torch parallelism from 192 threads to 1 to avoid unnecessary CPU contention. Set OMP_NUM_THREADS in the external environment to tune this value as needed.
+INFO 02-03 03:13:02 custom_cache_manager.py:17] Setting Triton cache manager to: vllm.triton_utils.custom_cache_manager:CustomCacheManager
+[1;36m(VllmWorkerProcess pid=3383676)[0;0m INFO 02-03 03:13:03 multiproc_worker_utils.py:215] Worker ready; awaiting tasks
+[1;36m(VllmWorkerProcess pid=3383677)[0;0m INFO 02-03 03:13:03 multiproc_worker_utils.py:215] Worker ready; awaiting tasks
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m INFO 02-03 03:13:03 multiproc_worker_utils.py:215] Worker ready; awaiting tasks
+[1;36m(VllmWorkerProcess pid=3383677)[0;0m INFO 02-03 03:13:13 utils.py:1008] Found nccl from library libnccl.so.2
+[1;36m(VllmWorkerProcess pid=3383677)[0;0m INFO 02-03 03:13:13 pynccl.py:63] vLLM is using nccl==2.20.5
+INFO 02-03 03:13:13 utils.py:1008] Found nccl from library libnccl.so.2
+INFO 02-03 03:13:13 pynccl.py:63] vLLM is using nccl==2.20.5
+[1;36m(VllmWorkerProcess pid=3383676)[0;0m INFO 02-03 03:13:13 utils.py:1008] Found nccl from library libnccl.so.2
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m INFO 02-03 03:13:13 utils.py:1008] Found nccl from library libnccl.so.2
+[1;36m(VllmWorkerProcess pid=3383676)[0;0m INFO 02-03 03:13:13 pynccl.py:63] vLLM is using nccl==2.20.5
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m INFO 02-03 03:13:13 pynccl.py:63] vLLM is using nccl==2.20.5
+[1;36m(VllmWorkerProcess pid=3383677)[0;0m INFO 02-03 03:13:20 custom_all_reduce_utils.py:242] reading GPU P2P access cache from /home/wenjiema/.cache/vllm/gpu_p2p_access_cache_for_2,3,4,5.json
+[1;36m(VllmWorkerProcess pid=3383676)[0;0m INFO 02-03 03:13:20 custom_all_reduce_utils.py:242] reading GPU P2P access cache from /home/wenjiema/.cache/vllm/gpu_p2p_access_cache_for_2,3,4,5.json
+INFO 02-03 03:13:20 custom_all_reduce_utils.py:242] reading GPU P2P access cache from /home/wenjiema/.cache/vllm/gpu_p2p_access_cache_for_2,3,4,5.json
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m INFO 02-03 03:13:20 custom_all_reduce_utils.py:242] reading GPU P2P access cache from /home/wenjiema/.cache/vllm/gpu_p2p_access_cache_for_2,3,4,5.json
+INFO 02-03 03:13:20 shm_broadcast.py:241] vLLM message queue communication handle: Handle(connect_ip='127.0.0.1', local_reader_ranks=[1, 2, 3], buffer=<vllm.distributed.device_communicators.shm_broadcast.ShmRingBuffer object at 0x7f960096ddb0>, local_subscribe_port=56621, remote_subscribe_port=None)
+INFO 02-03 03:13:20 model_runner.py:1056] Starting to load model deepseek-ai/DeepSeek-R1-Distill-Qwen-32B...
+[1;36m(VllmWorkerProcess pid=3383676)[0;0m INFO 02-03 03:13:20 model_runner.py:1056] Starting to load model deepseek-ai/DeepSeek-R1-Distill-Qwen-32B...
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m INFO 02-03 03:13:20 model_runner.py:1056] Starting to load model deepseek-ai/DeepSeek-R1-Distill-Qwen-32B...
+[1;36m(VllmWorkerProcess pid=3383677)[0;0m INFO 02-03 03:13:20 model_runner.py:1056] Starting to load model deepseek-ai/DeepSeek-R1-Distill-Qwen-32B...
+[1;36m(VllmWorkerProcess pid=3383677)[0;0m INFO 02-03 03:13:22 weight_utils.py:243] Using model weights format ['*.safetensors']
+[1;36m(VllmWorkerProcess pid=3383676)[0;0m INFO 02-03 03:13:22 weight_utils.py:243] Using model weights format ['*.safetensors']
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229] Exception in worker VllmWorkerProcess while processing method load_model.
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229] Traceback (most recent call last):
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/urllib3/connectionpool.py", line 534, in _make_request
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     response = conn.getresponse()
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/urllib3/connection.py", line 516, in getresponse
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     httplib_response = super().getresponse()
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/http/client.py", line 1375, in getresponse
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     response.begin()
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/http/client.py", line 318, in begin
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     version, status, reason = self._read_status()
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/http/client.py", line 279, in _read_status
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/socket.py", line 717, in readinto
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     return self._sock.recv_into(b)
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/ssl.py", line 1307, in recv_into
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     return self.read(nbytes, buffer)
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/ssl.py", line 1163, in read
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     return self._sslobj.read(len, buffer)
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229] TimeoutError: The read operation timed out
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229] 
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229] The above exception was the direct cause of the following exception:
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229] 
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229] Traceback (most recent call last):
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/requests/adapters.py", line 667, in send
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     resp = conn.urlopen(
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     retries = retries.increment(
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/urllib3/util/retry.py", line 474, in increment
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     raise reraise(type(error), error, _stacktrace)
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/urllib3/util/util.py", line 39, in reraise
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     raise value
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     response = self._make_request(
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/urllib3/connectionpool.py", line 536, in _make_request
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/urllib3/connectionpool.py", line 367, in _raise_timeout
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     raise ReadTimeoutError(
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229] urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='huggingface.co', port=443): Read timed out. (read timeout=10)
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229] 
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229] During handling of the above exception, another exception occurred:
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229] 
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229] Traceback (most recent call last):
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/vllm/executor/multiproc_worker_utils.py", line 223, in _run_worker_process
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     output = executor(*args, **kwargs)
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/vllm/worker/worker.py", line 183, in load_model
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     self.model_runner.load_model()
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/vllm/worker/model_runner.py", line 1058, in load_model
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     self.model = get_model(model_config=self.model_config,
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/vllm/model_executor/model_loader/__init__.py", line 19, in get_model
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     return loader.load_model(model_config=model_config,
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/vllm/model_executor/model_loader/loader.py", line 402, in load_model
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     model.load_weights(self._get_all_weights(model_config, model))
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/vllm/model_executor/models/qwen2.py", line 442, in load_weights
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     loader.load_weights(weights)
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/vllm/model_executor/models/utils.py", line 203, in load_weights
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     autoloaded_weights = list(self._load_module("", self.module, weights))
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/vllm/model_executor/models/utils.py", line 175, in _load_module
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     for child_prefix, child_weights in self._groupby_prefix(weights):
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/vllm/model_executor/models/utils.py", line 104, in _groupby_prefix
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     for prefix, group in itertools.groupby(weights_by_parts,
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/vllm/model_executor/models/utils.py", line 101, in <genexpr>
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     weights_by_parts = ((weight_name.split(".", 1), weight_data)
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/vllm/model_executor/model_loader/loader.py", line 377, in _get_all_weights
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     yield from self._get_weights_iterator(primary_weights)
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/vllm/model_executor/model_loader/loader.py", line 336, in _get_weights_iterator
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     hf_folder, hf_weights_files, use_safetensors = self._prepare_weights(
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/vllm/model_executor/model_loader/loader.py", line 292, in _prepare_weights
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     hf_folder = download_weights_from_hf(
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/vllm/model_executor/model_loader/weight_utils.py", line 234, in download_weights_from_hf
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     file_list = fs.ls(model_name_or_path, detail=False, revision=revision)
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/huggingface_hub/hf_file_system.py", line 368, in ls
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     resolved_path = self.resolve_path(path, revision=revision)
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/huggingface_hub/hf_file_system.py", line 209, in resolve_path
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     repo_and_revision_exist, err = self._repo_and_revision_exist(repo_type, repo_id, revision)
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/huggingface_hub/hf_file_system.py", line 125, in _repo_and_revision_exist
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     self._api.repo_info(
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/huggingface_hub/utils/_validators.py", line 114, in _inner_fn
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     return fn(*args, **kwargs)
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/huggingface_hub/hf_api.py", line 2704, in repo_info
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     return method(
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/huggingface_hub/utils/_validators.py", line 114, in _inner_fn
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     return fn(*args, **kwargs)
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/huggingface_hub/hf_api.py", line 2488, in model_info
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     r = get_session().get(path, headers=headers, timeout=timeout, params=params)
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/requests/sessions.py", line 602, in get
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     return self.request("GET", url, **kwargs)
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     resp = self.send(prep, **send_kwargs)
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/requests/sessions.py", line 703, in send
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     r = adapter.send(request, **kwargs)
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/huggingface_hub/utils/_http.py", line 93, in send
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     return super().send(request, *args, **kwargs)
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]   File "/home/wenjiema/miniconda3/envs/goedel/lib/python3.10/site-packages/requests/adapters.py", line 713, in send
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229]     raise ReadTimeout(e, request=request)
+[1;36m(VllmWorkerProcess pid=3383678)[0;0m ERROR 02-03 03:13:32 multiproc_worker_utils.py:229] requests.exceptions.ReadTimeout: (ReadTimeoutError("HTTPSConnectionPool(host='huggingface.co', port=443): Read timed out. (read timeout=10)"), '(Request ID: a171fc50-2da7-448d-be20-008df7556420)')
+ERROR 02-03 03:13:32 multiproc_worker_utils.py:116] Worker VllmWorkerProcess pid 3383676 died, exit code: -15
+INFO 02-03 03:13:32 multiproc_worker_utils.py:120] Killing local vLLM worker processes
+Your branch is ahead of 'origin/main' by 2 commits.
+  (use "git push" to publish your local commits)
+INFO 02-03 03:13:49 config.py:905] Defaulting to use mp for distributed inference
+INFO 02-03 03:13:49 llm_engine.py:237] Initializing an LLM engine (v0.6.3.post1) with config: model='Qwen/Qwen2.5-32B', speculative_config=None, tokenizer='Qwen/Qwen2.5-32B', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, override_neuron_config=None, rope_scaling=None, rope_theta=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.bfloat16, max_seq_len=4096, download_dir=None, load_format=LoadFormat.AUTO, tensor_parallel_size=4, pipeline_parallel_size=1, disable_custom_all_reduce=False, quantization=None, enforce_eager=False, kv_cache_dtype=auto, quantization_param_path=None, device_config=cuda, decoding_config=DecodingConfig(guided_decoding_backend='outlines'), observability_config=ObservabilityConfig(otlp_traces_endpoint=None, collect_model_forward_time=False, collect_model_execute_time=False), seed=1, served_model_name=Qwen/Qwen2.5-32B, num_scheduler_steps=1, chunked_prefill_enabled=False multi_step_stream_outputs=True, enable_prefix_caching=False, use_async_output_proc=True, use_cached_outputs=False, mm_processor_kwargs=None)
+WARNING 02-03 03:13:49 multiproc_gpu_executor.py:53] Reducing Torch parallelism from 192 threads to 1 to avoid unnecessary CPU contention. Set OMP_NUM_THREADS in the external environment to tune this value as needed.
+INFO 02-03 03:13:49 custom_cache_manager.py:17] Setting Triton cache manager to: vllm.triton_utils.custom_cache_manager:CustomCacheManager
+[1;36m(VllmWorkerProcess pid=3384399)[0;0m INFO 02-03 03:13:50 multiproc_worker_utils.py:215] Worker ready; awaiting tasks
+[1;36m(VllmWorkerProcess pid=3384400)[0;0m INFO 02-03 03:13:50 multiproc_worker_utils.py:215] Worker ready; awaiting tasks
+[1;36m(VllmWorkerProcess pid=3384398)[0;0m INFO 02-03 03:13:50 multiproc_worker_utils.py:215] Worker ready; awaiting tasks
+[1;36m(VllmWorkerProcess pid=3384399)[0;0m INFO 02-03 03:14:01 utils.py:1008] Found nccl from library libnccl.so.2
+[1;36m(VllmWorkerProcess pid=3384398)[0;0m INFO 02-03 03:14:01 utils.py:1008] Found nccl from library libnccl.so.2
+[1;36m(VllmWorkerProcess pid=3384399)[0;0m INFO 02-03 03:14:01 pynccl.py:63] vLLM is using nccl==2.20.5
+[1;36m(VllmWorkerProcess pid=3384398)[0;0m INFO 02-03 03:14:01 pynccl.py:63] vLLM is using nccl==2.20.5
+INFO 02-03 03:14:01 utils.py:1008] Found nccl from library libnccl.so.2
+[1;36m(VllmWorkerProcess pid=3384400)[0;0m INFO 02-03 03:14:01 utils.py:1008] Found nccl from library libnccl.so.2
+INFO 02-03 03:14:01 pynccl.py:63] vLLM is using nccl==2.20.5
+[1;36m(VllmWorkerProcess pid=3384400)[0;0m INFO 02-03 03:14:01 pynccl.py:63] vLLM is using nccl==2.20.5
+[1;36m(VllmWorkerProcess pid=3384398)[0;0m INFO 02-03 03:14:08 custom_all_reduce_utils.py:242] reading GPU P2P access cache from /home/wenjiema/.cache/vllm/gpu_p2p_access_cache_for_2,3,4,5.json
+[1;36m(VllmWorkerProcess pid=3384400)[0;0m INFO 02-03 03:14:08 custom_all_reduce_utils.py:242] reading GPU P2P access cache from /home/wenjiema/.cache/vllm/gpu_p2p_access_cache_for_2,3,4,5.json
+INFO 02-03 03:14:08 custom_all_reduce_utils.py:242] reading GPU P2P access cache from /home/wenjiema/.cache/vllm/gpu_p2p_access_cache_for_2,3,4,5.json
+[1;36m(VllmWorkerProcess pid=3384399)[0;0m INFO 02-03 03:14:08 custom_all_reduce_utils.py:242] reading GPU P2P access cache from /home/wenjiema/.cache/vllm/gpu_p2p_access_cache_for_2,3,4,5.json
+INFO 02-03 03:14:09 shm_broadcast.py:241] vLLM message queue communication handle: Handle(connect_ip='127.0.0.1', local_reader_ranks=[1, 2, 3], buffer=<vllm.distributed.device_communicators.shm_broadcast.ShmRingBuffer object at 0x7f715317dc60>, local_subscribe_port=35921, remote_subscribe_port=None)
+INFO 02-03 03:14:09 model_runner.py:1056] Starting to load model Qwen/Qwen2.5-32B...
+[1;36m(VllmWorkerProcess pid=3384398)[0;0m INFO 02-03 03:14:09 model_runner.py:1056] Starting to load model Qwen/Qwen2.5-32B...
+[1;36m(VllmWorkerProcess pid=3384400)[0;0m INFO 02-03 03:14:09 model_runner.py:1056] Starting to load model Qwen/Qwen2.5-32B...
+[1;36m(VllmWorkerProcess pid=3384399)[0;0m INFO 02-03 03:14:09 model_runner.py:1056] Starting to load model Qwen/Qwen2.5-32B...
+[1;36m(VllmWorkerProcess pid=3384400)[0;0m INFO 02-03 03:14:10 weight_utils.py:243] Using model weights format ['*.safetensors']
+[1;36m(VllmWorkerProcess pid=3384399)[0;0m INFO 02-03 03:14:10 weight_utils.py:243] Using model weights format ['*.safetensors']
+[1;36m(VllmWorkerProcess pid=3384398)[0;0m INFO 02-03 03:14:10 weight_utils.py:243] Using model weights format ['*.safetensors']
+INFO 02-03 03:14:10 weight_utils.py:243] Using model weights format ['*.safetensors']
+[1;36m(VllmWorkerProcess pid=3384400)[0;0m INFO 02-03 03:14:17 model_runner.py:1067] Loading model weights took 15.4136 GB
+INFO 02-03 03:14:17 model_runner.py:1067] Loading model weights took 15.4136 GB
+[1;36m(VllmWorkerProcess pid=3384398)[0;0m INFO 02-03 03:14:17 model_runner.py:1067] Loading model weights took 15.4136 GB
+[1;36m(VllmWorkerProcess pid=3384399)[0;0m INFO 02-03 03:14:18 model_runner.py:1067] Loading model weights took 15.4136 GB
+INFO 02-03 03:14:23 distributed_gpu_executor.py:57] # GPU blocks: 49241, # CPU blocks: 8192
+INFO 02-03 03:14:23 distributed_gpu_executor.py:61] Maximum concurrency for 4096 tokens per request: 192.35x
+[1;36m(VllmWorkerProcess pid=3384399)[0;0m INFO 02-03 03:14:31 model_runner.py:1395] Capturing the model for CUDA graphs. This may lead to unexpected consequences if the model is not static. To run the model in eager mode, set 'enforce_eager=True' or use '--enforce-eager' in the CLI.
+[1;36m(VllmWorkerProcess pid=3384400)[0;0m INFO 02-03 03:14:31 model_runner.py:1395] Capturing the model for CUDA graphs. This may lead to unexpected consequences if the model is not static. To run the model in eager mode, set 'enforce_eager=True' or use '--enforce-eager' in the CLI.
+[1;36m(VllmWorkerProcess pid=3384400)[0;0m INFO 02-03 03:14:31 model_runner.py:1399] CUDA graphs can take additional 1~3 GiB memory per GPU. If you are running out of memory, consider decreasing `gpu_memory_utilization` or enforcing eager mode. You can also reduce the `max_num_seqs` as needed to decrease memory usage.
+[1;36m(VllmWorkerProcess pid=3384399)[0;0m INFO 02-03 03:14:31 model_runner.py:1399] CUDA graphs can take additional 1~3 GiB memory per GPU. If you are running out of memory, consider decreasing `gpu_memory_utilization` or enforcing eager mode. You can also reduce the `max_num_seqs` as needed to decrease memory usage.
+[1;36m(VllmWorkerProcess pid=3384398)[0;0m INFO 02-03 03:14:31 model_runner.py:1395] Capturing the model for CUDA graphs. This may lead to unexpected consequences if the model is not static. To run the model in eager mode, set 'enforce_eager=True' or use '--enforce-eager' in the CLI.
+[1;36m(VllmWorkerProcess pid=3384398)[0;0m INFO 02-03 03:14:31 model_runner.py:1399] CUDA graphs can take additional 1~3 GiB memory per GPU. If you are running out of memory, consider decreasing `gpu_memory_utilization` or enforcing eager mode. You can also reduce the `max_num_seqs` as needed to decrease memory usage.
+INFO 02-03 03:14:31 model_runner.py:1395] Capturing the model for CUDA graphs. This may lead to unexpected consequences if the model is not static. To run the model in eager mode, set 'enforce_eager=True' or use '--enforce-eager' in the CLI.
+INFO 02-03 03:14:31 model_runner.py:1399] CUDA graphs can take additional 1~3 GiB memory per GPU. If you are running out of memory, consider decreasing `gpu_memory_utilization` or enforcing eager mode. You can also reduce the `max_num_seqs` as needed to decrease memory usage.
+[1;36m(VllmWorkerProcess pid=3384398)[0;0m INFO 02-03 03:14:53 custom_all_reduce.py:233] Registering 4515 cuda graph addresses
+[1;36m(VllmWorkerProcess pid=3384400)[0;0m INFO 02-03 03:14:53 custom_all_reduce.py:233] Registering 4515 cuda graph addresses
+INFO 02-03 03:14:53 custom_all_reduce.py:233] Registering 4515 cuda graph addresses
+[1;36m(VllmWorkerProcess pid=3384399)[0;0m INFO 02-03 03:14:53 custom_all_reduce.py:233] Registering 4515 cuda graph addresses
+INFO 02-03 03:14:54 model_runner.py:1523] Graph capturing finished in 23 secs.
+[1;36m(VllmWorkerProcess pid=3384400)[0;0m INFO 02-03 03:14:54 model_runner.py:1523] Graph capturing finished in 23 secs.
+[1;36m(VllmWorkerProcess pid=3384398)[0;0m INFO 02-03 03:14:54 model_runner.py:1523] Graph capturing finished in 23 secs.
+[1;36m(VllmWorkerProcess pid=3384399)[0;0m INFO 02-03 03:14:54 model_runner.py:1523] Graph capturing finished in 23 secs.
+Outputing to results/minif2f/pass_8/Qwen-32B/full_records.json
+Outputing to results/minif2f/pass_8/Qwen-32B/to_inference_codes.json
+ERROR 02-03 03:21:44 multiproc_worker_utils.py:116] Worker VllmWorkerProcess pid 3384399 died, exit code: -15
+INFO 02-03 03:21:44 multiproc_worker_utils.py:120] Killing local vLLM worker processes
+Complete launching 128 LeanServerProcesses
+All 128 LeanServerProcesses stopped
+INFO 02-03 03:23:07 config.py:905] Defaulting to use mp for distributed inference
+INFO 02-03 03:23:07 llm_engine.py:237] Initializing an LLM engine (v0.6.3.post1) with config: model='Qwen/QwQ-32B-Preview', speculative_config=None, tokenizer='Qwen/QwQ-32B-Preview', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, override_neuron_config=None, rope_scaling=None, rope_theta=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.bfloat16, max_seq_len=4096, download_dir=None, load_format=LoadFormat.AUTO, tensor_parallel_size=4, pipeline_parallel_size=1, disable_custom_all_reduce=False, quantization=None, enforce_eager=False, kv_cache_dtype=auto, quantization_param_path=None, device_config=cuda, decoding_config=DecodingConfig(guided_decoding_backend='outlines'), observability_config=ObservabilityConfig(otlp_traces_endpoint=None, collect_model_forward_time=False, collect_model_execute_time=False), seed=1, served_model_name=Qwen/QwQ-32B-Preview, num_scheduler_steps=1, chunked_prefill_enabled=False multi_step_stream_outputs=True, enable_prefix_caching=False, use_async_output_proc=True, use_cached_outputs=False, mm_processor_kwargs=None)
+WARNING 02-03 03:23:08 multiproc_gpu_executor.py:53] Reducing Torch parallelism from 192 threads to 1 to avoid unnecessary CPU contention. Set OMP_NUM_THREADS in the external environment to tune this value as needed.
+INFO 02-03 03:23:08 custom_cache_manager.py:17] Setting Triton cache manager to: vllm.triton_utils.custom_cache_manager:CustomCacheManager
+[1;36m(VllmWorkerProcess pid=3539213)[0;0m INFO 02-03 03:23:09 multiproc_worker_utils.py:215] Worker ready; awaiting tasks
+[1;36m(VllmWorkerProcess pid=3539214)[0;0m INFO 02-03 03:23:09 multiproc_worker_utils.py:215] Worker ready; awaiting tasks
+[1;36m(VllmWorkerProcess pid=3539212)[0;0m INFO 02-03 03:23:09 multiproc_worker_utils.py:215] Worker ready; awaiting tasks
+INFO 02-03 03:23:19 utils.py:1008] Found nccl from library libnccl.so.2
+[1;36m(VllmWorkerProcess pid=3539213)[0;0m INFO 02-03 03:23:19 utils.py:1008] Found nccl from library libnccl.so.2
+[1;36m(VllmWorkerProcess pid=3539214)[0;0m INFO 02-03 03:23:19 utils.py:1008] Found nccl from library libnccl.so.2
+[1;36m(VllmWorkerProcess pid=3539213)[0;0m INFO 02-03 03:23:19 pynccl.py:63] vLLM is using nccl==2.20.5
+[1;36m(VllmWorkerProcess pid=3539214)[0;0m INFO 02-03 03:23:19 pynccl.py:63] vLLM is using nccl==2.20.5
+[1;36m(VllmWorkerProcess pid=3539212)[0;0m INFO 02-03 03:23:19 utils.py:1008] Found nccl from library libnccl.so.2
+INFO 02-03 03:23:19 pynccl.py:63] vLLM is using nccl==2.20.5
+[1;36m(VllmWorkerProcess pid=3539212)[0;0m INFO 02-03 03:23:19 pynccl.py:63] vLLM is using nccl==2.20.5
+[1;36m(VllmWorkerProcess pid=3539214)[0;0m INFO 02-03 03:23:27 custom_all_reduce_utils.py:242] reading GPU P2P access cache from /home/wenjiema/.cache/vllm/gpu_p2p_access_cache_for_2,3,4,5.json
+[1;36m(VllmWorkerProcess pid=3539213)[0;0m INFO 02-03 03:23:27 custom_all_reduce_utils.py:242] reading GPU P2P access cache from /home/wenjiema/.cache/vllm/gpu_p2p_access_cache_for_2,3,4,5.json
+[1;36m(VllmWorkerProcess pid=3539212)[0;0m INFO 02-03 03:23:27 custom_all_reduce_utils.py:242] reading GPU P2P access cache from /home/wenjiema/.cache/vllm/gpu_p2p_access_cache_for_2,3,4,5.json
+INFO 02-03 03:23:27 custom_all_reduce_utils.py:242] reading GPU P2P access cache from /home/wenjiema/.cache/vllm/gpu_p2p_access_cache_for_2,3,4,5.json
+INFO 02-03 03:23:27 shm_broadcast.py:241] vLLM message queue communication handle: Handle(connect_ip='127.0.0.1', local_reader_ranks=[1, 2, 3], buffer=<vllm.distributed.device_communicators.shm_broadcast.ShmRingBuffer object at 0x7fbab4d71c00>, local_subscribe_port=59549, remote_subscribe_port=None)
+INFO 02-03 03:23:27 model_runner.py:1056] Starting to load model Qwen/QwQ-32B-Preview...
+[1;36m(VllmWorkerProcess pid=3539213)[0;0m INFO 02-03 03:23:27 model_runner.py:1056] Starting to load model Qwen/QwQ-32B-Preview...
+[1;36m(VllmWorkerProcess pid=3539212)[0;0m INFO 02-03 03:23:27 model_runner.py:1056] Starting to load model Qwen/QwQ-32B-Preview...
+[1;36m(VllmWorkerProcess pid=3539214)[0;0m INFO 02-03 03:23:27 model_runner.py:1056] Starting to load model Qwen/QwQ-32B-Preview...
+[1;36m(VllmWorkerProcess pid=3539214)[0;0m INFO 02-03 03:23:29 weight_utils.py:243] Using model weights format ['*.safetensors']
+[1;36m(VllmWorkerProcess pid=3539213)[0;0m INFO 02-03 03:23:29 weight_utils.py:243] Using model weights format ['*.safetensors']
+[1;36m(VllmWorkerProcess pid=3539212)[0;0m INFO 02-03 03:23:29 weight_utils.py:243] Using model weights format ['*.safetensors']
+INFO 02-03 03:23:29 weight_utils.py:243] Using model weights format ['*.safetensors']
+[1;36m(VllmWorkerProcess pid=3539214)[0;0m INFO 02-03 03:23:35 model_runner.py:1067] Loading model weights took 15.3916 GB
+[1;36m(VllmWorkerProcess pid=3539213)[0;0m INFO 02-03 03:23:36 model_runner.py:1067] Loading model weights took 15.3916 GB
+INFO 02-03 03:23:37 model_runner.py:1067] Loading model weights took 15.3916 GB
+[1;36m(VllmWorkerProcess pid=3539212)[0;0m INFO 02-03 03:23:37 model_runner.py:1067] Loading model weights took 15.3916 GB
+INFO 02-03 03:23:43 distributed_gpu_executor.py:57] # GPU blocks: 49259, # CPU blocks: 8192
+INFO 02-03 03:23:43 distributed_gpu_executor.py:61] Maximum concurrency for 4096 tokens per request: 192.42x
+[1;36m(VllmWorkerProcess pid=3539213)[0;0m INFO 02-03 03:23:51 model_runner.py:1395] Capturing the model for CUDA graphs. This may lead to unexpected consequences if the model is not static. To run the model in eager mode, set 'enforce_eager=True' or use '--enforce-eager' in the CLI.
+[1;36m(VllmWorkerProcess pid=3539213)[0;0m INFO 02-03 03:23:51 model_runner.py:1399] CUDA graphs can take additional 1~3 GiB memory per GPU. If you are running out of memory, consider decreasing `gpu_memory_utilization` or enforcing eager mode. You can also reduce the `max_num_seqs` as needed to decrease memory usage.
+[1;36m(VllmWorkerProcess pid=3539212)[0;0m INFO 02-03 03:23:51 model_runner.py:1395] Capturing the model for CUDA graphs. This may lead to unexpected consequences if the model is not static. To run the model in eager mode, set 'enforce_eager=True' or use '--enforce-eager' in the CLI.
+[1;36m(VllmWorkerProcess pid=3539212)[0;0m INFO 02-03 03:23:51 model_runner.py:1399] CUDA graphs can take additional 1~3 GiB memory per GPU. If you are running out of memory, consider decreasing `gpu_memory_utilization` or enforcing eager mode. You can also reduce the `max_num_seqs` as needed to decrease memory usage.
+[1;36m(VllmWorkerProcess pid=3539214)[0;0m INFO 02-03 03:23:51 model_runner.py:1395] Capturing the model for CUDA graphs. This may lead to unexpected consequences if the model is not static. To run the model in eager mode, set 'enforce_eager=True' or use '--enforce-eager' in the CLI.
+[1;36m(VllmWorkerProcess pid=3539214)[0;0m INFO 02-03 03:23:51 model_runner.py:1399] CUDA graphs can take additional 1~3 GiB memory per GPU. If you are running out of memory, consider decreasing `gpu_memory_utilization` or enforcing eager mode. You can also reduce the `max_num_seqs` as needed to decrease memory usage.
+INFO 02-03 03:23:52 model_runner.py:1395] Capturing the model for CUDA graphs. This may lead to unexpected consequences if the model is not static. To run the model in eager mode, set 'enforce_eager=True' or use '--enforce-eager' in the CLI.
+INFO 02-03 03:23:52 model_runner.py:1399] CUDA graphs can take additional 1~3 GiB memory per GPU. If you are running out of memory, consider decreasing `gpu_memory_utilization` or enforcing eager mode. You can also reduce the `max_num_seqs` as needed to decrease memory usage.
+[1;36m(VllmWorkerProcess pid=3539212)[0;0m INFO 02-03 03:24:14 custom_all_reduce.py:233] Registering 4515 cuda graph addresses
+[1;36m(VllmWorkerProcess pid=3539214)[0;0m INFO 02-03 03:24:14 custom_all_reduce.py:233] Registering 4515 cuda graph addresses
+INFO 02-03 03:24:14 custom_all_reduce.py:233] Registering 4515 cuda graph addresses
+[1;36m(VllmWorkerProcess pid=3539213)[0;0m INFO 02-03 03:24:14 custom_all_reduce.py:233] Registering 4515 cuda graph addresses
+[1;36m(VllmWorkerProcess pid=3539212)[0;0m INFO 02-03 03:24:15 model_runner.py:1523] Graph capturing finished in 24 secs.
+[1;36m(VllmWorkerProcess pid=3539214)[0;0m INFO 02-03 03:24:15 model_runner.py:1523] Graph capturing finished in 24 secs.
+[1;36m(VllmWorkerProcess pid=3539213)[0;0m INFO 02-03 03:24:15 model_runner.py:1523] Graph capturing finished in 24 secs.
+INFO 02-03 03:24:15 model_runner.py:1523] Graph capturing finished in 23 secs.
+Outputing to results/minif2f/pass_8/QwQ-32B/full_records.json
+Outputing to results/minif2f/pass_8/QwQ-32B/to_inference_codes.json
+ERROR 02-03 03:34:07 multiproc_worker_utils.py:116] Worker VllmWorkerProcess pid 3539213 died, exit code: -15
+INFO 02-03 03:34:07 multiproc_worker_utils.py:120] Killing local vLLM worker processes
+Complete launching 128 LeanServerProcesses
+TaskQueue-verifier:  1952 requests popped with avg batch_size 1.0 in last period  0 waiting in queue
+All 128 LeanServerProcesses stopped
+INFO 02-03 03:39:37 config.py:905] Defaulting to use mp for distributed inference
+INFO 02-03 03:39:37 llm_engine.py:237] Initializing an LLM engine (v0.6.3.post1) with config: model='Goedel-LM/Goedel-Prover-SFT', speculative_config=None, tokenizer='Goedel-LM/Goedel-Prover-SFT', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, override_neuron_config=None, rope_scaling=None, rope_theta=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.bfloat16, max_seq_len=4096, download_dir=None, load_format=LoadFormat.AUTO, tensor_parallel_size=4, pipeline_parallel_size=1, disable_custom_all_reduce=False, quantization=None, enforce_eager=False, kv_cache_dtype=auto, quantization_param_path=None, device_config=cuda, decoding_config=DecodingConfig(guided_decoding_backend='outlines'), observability_config=ObservabilityConfig(otlp_traces_endpoint=None, collect_model_forward_time=False, collect_model_execute_time=False), seed=1, served_model_name=Goedel-LM/Goedel-Prover-SFT, num_scheduler_steps=1, chunked_prefill_enabled=False multi_step_stream_outputs=True, enable_prefix_caching=False, use_async_output_proc=True, use_cached_outputs=False, mm_processor_kwargs=None)
+WARNING 02-03 03:39:38 multiproc_gpu_executor.py:53] Reducing Torch parallelism from 192 threads to 1 to avoid unnecessary CPU contention. Set OMP_NUM_THREADS in the external environment to tune this value as needed.
+INFO 02-03 03:39:38 custom_cache_manager.py:17] Setting Triton cache manager to: vllm.triton_utils.custom_cache_manager:CustomCacheManager
+[1;36m(VllmWorkerProcess pid=3693837)[0;0m INFO 02-03 03:39:39 multiproc_worker_utils.py:215] Worker ready; awaiting tasks
+[1;36m(VllmWorkerProcess pid=3693838)[0;0m INFO 02-03 03:39:39 multiproc_worker_utils.py:215] Worker ready; awaiting tasks
+[1;36m(VllmWorkerProcess pid=3693836)[0;0m INFO 02-03 03:39:39 multiproc_worker_utils.py:215] Worker ready; awaiting tasks
+[1;36m(VllmWorkerProcess pid=3693838)[0;0m INFO 02-03 03:39:50 utils.py:1008] Found nccl from library libnccl.so.2
+[1;36m(VllmWorkerProcess pid=3693836)[0;0m INFO 02-03 03:39:50 utils.py:1008] Found nccl from library libnccl.so.2
+[1;36m(VllmWorkerProcess pid=3693838)[0;0m INFO 02-03 03:39:50 pynccl.py:63] vLLM is using nccl==2.20.5
+[1;36m(VllmWorkerProcess pid=3693836)[0;0m INFO 02-03 03:39:50 pynccl.py:63] vLLM is using nccl==2.20.5
+INFO 02-03 03:39:50 utils.py:1008] Found nccl from library libnccl.so.2
+[1;36m(VllmWorkerProcess pid=3693837)[0;0m INFO 02-03 03:39:50 utils.py:1008] Found nccl from library libnccl.so.2
+INFO 02-03 03:39:50 pynccl.py:63] vLLM is using nccl==2.20.5
+[1;36m(VllmWorkerProcess pid=3693837)[0;0m INFO 02-03 03:39:50 pynccl.py:63] vLLM is using nccl==2.20.5
+[1;36m(VllmWorkerProcess pid=3693837)[0;0m INFO 02-03 03:39:56 custom_all_reduce_utils.py:242] reading GPU P2P access cache from /home/wenjiema/.cache/vllm/gpu_p2p_access_cache_for_2,3,4,5.json
+[1;36m(VllmWorkerProcess pid=3693838)[0;0m INFO 02-03 03:39:56 custom_all_reduce_utils.py:242] reading GPU P2P access cache from /home/wenjiema/.cache/vllm/gpu_p2p_access_cache_for_2,3,4,5.json
+INFO 02-03 03:39:56 custom_all_reduce_utils.py:242] reading GPU P2P access cache from /home/wenjiema/.cache/vllm/gpu_p2p_access_cache_for_2,3,4,5.json
+[1;36m(VllmWorkerProcess pid=3693836)[0;0m INFO 02-03 03:39:56 custom_all_reduce_utils.py:242] reading GPU P2P access cache from /home/wenjiema/.cache/vllm/gpu_p2p_access_cache_for_2,3,4,5.json
+INFO 02-03 03:39:57 shm_broadcast.py:241] vLLM message queue communication handle: Handle(connect_ip='127.0.0.1', local_reader_ranks=[1, 2, 3], buffer=<vllm.distributed.device_communicators.shm_broadcast.ShmRingBuffer object at 0x7f4369979b40>, local_subscribe_port=58869, remote_subscribe_port=None)
+INFO 02-03 03:39:57 model_runner.py:1056] Starting to load model Goedel-LM/Goedel-Prover-SFT...
+[1;36m(VllmWorkerProcess pid=3693838)[0;0m INFO 02-03 03:39:57 model_runner.py:1056] Starting to load model Goedel-LM/Goedel-Prover-SFT...
+[1;36m(VllmWorkerProcess pid=3693837)[0;0m INFO 02-03 03:39:57 model_runner.py:1056] Starting to load model Goedel-LM/Goedel-Prover-SFT...
+[1;36m(VllmWorkerProcess pid=3693836)[0;0m INFO 02-03 03:39:57 model_runner.py:1056] Starting to load model Goedel-LM/Goedel-Prover-SFT...
+[1;36m(VllmWorkerProcess pid=3693837)[0;0m INFO 02-03 03:39:58 weight_utils.py:243] Using model weights format ['*.safetensors']
+[1;36m(VllmWorkerProcess pid=3693838)[0;0m INFO 02-03 03:39:58 weight_utils.py:243] Using model weights format ['*.safetensors']
+INFO 02-03 03:39:58 weight_utils.py:243] Using model weights format ['*.safetensors']
+[1;36m(VllmWorkerProcess pid=3693836)[0;0m INFO 02-03 03:39:58 weight_utils.py:243] Using model weights format ['*.safetensors']
+[1;36m(VllmWorkerProcess pid=3693837)[0;0m INFO 02-03 03:39:59 model_runner.py:1067] Loading model weights took 3.2632 GB
+[1;36m(VllmWorkerProcess pid=3693838)[0;0m INFO 02-03 03:40:00 model_runner.py:1067] Loading model weights took 3.2632 GB
+[1;36m(VllmWorkerProcess pid=3693836)[0;0m INFO 02-03 03:40:00 model_runner.py:1067] Loading model weights took 3.2632 GB
+INFO 02-03 03:40:00 model_runner.py:1067] Loading model weights took 3.2632 GB
+INFO 02-03 03:40:06 distributed_gpu_executor.py:57] # GPU blocks: 33201, # CPU blocks: 4369
+INFO 02-03 03:40:06 distributed_gpu_executor.py:61] Maximum concurrency for 4096 tokens per request: 129.69x
+[1;36m(VllmWorkerProcess pid=3693836)[0;0m INFO 02-03 03:40:19 model_runner.py:1395] Capturing the model for CUDA graphs. This may lead to unexpected consequences if the model is not static. To run the model in eager mode, set 'enforce_eager=True' or use '--enforce-eager' in the CLI.
+[1;36m(VllmWorkerProcess pid=3693836)[0;0m INFO 02-03 03:40:19 model_runner.py:1399] CUDA graphs can take additional 1~3 GiB memory per GPU. If you are running out of memory, consider decreasing `gpu_memory_utilization` or enforcing eager mode. You can also reduce the `max_num_seqs` as needed to decrease memory usage.
+[1;36m(VllmWorkerProcess pid=3693837)[0;0m INFO 02-03 03:40:19 model_runner.py:1395] Capturing the model for CUDA graphs. This may lead to unexpected consequences if the model is not static. To run the model in eager mode, set 'enforce_eager=True' or use '--enforce-eager' in the CLI.
+[1;36m(VllmWorkerProcess pid=3693837)[0;0m INFO 02-03 03:40:19 model_runner.py:1399] CUDA graphs can take additional 1~3 GiB memory per GPU. If you are running out of memory, consider decreasing `gpu_memory_utilization` or enforcing eager mode. You can also reduce the `max_num_seqs` as needed to decrease memory usage.
+INFO 02-03 03:40:20 model_runner.py:1395] Capturing the model for CUDA graphs. This may lead to unexpected consequences if the model is not static. To run the model in eager mode, set 'enforce_eager=True' or use '--enforce-eager' in the CLI.
+INFO 02-03 03:40:20 model_runner.py:1399] CUDA graphs can take additional 1~3 GiB memory per GPU. If you are running out of memory, consider decreasing `gpu_memory_utilization` or enforcing eager mode. You can also reduce the `max_num_seqs` as needed to decrease memory usage.
+[1;36m(VllmWorkerProcess pid=3693838)[0;0m INFO 02-03 03:40:20 model_runner.py:1395] Capturing the model for CUDA graphs. This may lead to unexpected consequences if the model is not static. To run the model in eager mode, set 'enforce_eager=True' or use '--enforce-eager' in the CLI.
+[1;36m(VllmWorkerProcess pid=3693838)[0;0m INFO 02-03 03:40:20 model_runner.py:1399] CUDA graphs can take additional 1~3 GiB memory per GPU. If you are running out of memory, consider decreasing `gpu_memory_utilization` or enforcing eager mode. You can also reduce the `max_num_seqs` as needed to decrease memory usage.
+[1;36m(VllmWorkerProcess pid=3693836)[0;0m INFO 02-03 03:40:39 custom_all_reduce.py:233] Registering 2135 cuda graph addresses
+[1;36m(VllmWorkerProcess pid=3693838)[0;0m INFO 02-03 03:40:39 custom_all_reduce.py:233] Registering 2135 cuda graph addresses
+INFO 02-03 03:40:39 custom_all_reduce.py:233] Registering 2135 cuda graph addresses
+[1;36m(VllmWorkerProcess pid=3693837)[0;0m INFO 02-03 03:40:39 custom_all_reduce.py:233] Registering 2135 cuda graph addresses
+[1;36m(VllmWorkerProcess pid=3693838)[0;0m INFO 02-03 03:40:39 model_runner.py:1523] Graph capturing finished in 19 secs.
+[1;36m(VllmWorkerProcess pid=3693836)[0;0m INFO 02-03 03:40:39 model_runner.py:1523] Graph capturing finished in 20 secs.
+[1;36m(VllmWorkerProcess pid=3693837)[0;0m INFO 02-03 03:40:39 model_runner.py:1523] Graph capturing finished in 20 secs.
+INFO 02-03 03:40:39 model_runner.py:1523] Graph capturing finished in 19 secs.
+Outputing to results/minif2f/pass_8/Godel-Prover-SFT/full_records.json
+Outputing to results/minif2f/pass_8/Godel-Prover-SFT/to_inference_codes.json
+INFO 02-03 03:42:42 multiproc_worker_utils.py:120] Killing local vLLM worker processes
+Complete launching 128 LeanServerProcesses
+TaskQueue-verifier:  1389 requests popped with avg batch_size 1.0 in last period  563 waiting in queue
+TaskQueue-verifier:  563 requests popped with avg batch_size 1.0 in last period  0 waiting in queue
+All 128 LeanServerProcesses stopped
+INFO 02-03 03:48:56 config.py:905] Defaulting to use mp for distributed inference
+INFO 02-03 03:48:56 llm_engine.py:237] Initializing an LLM engine (v0.6.3.post1) with config: model='deepseek-ai/DeepSeek-Prover-V1.5-RL', speculative_config=None, tokenizer='deepseek-ai/DeepSeek-Prover-V1.5-RL', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, override_neuron_config=None, rope_scaling=None, rope_theta=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.bfloat16, max_seq_len=4096, download_dir=None, load_format=LoadFormat.AUTO, tensor_parallel_size=4, pipeline_parallel_size=1, disable_custom_all_reduce=False, quantization=None, enforce_eager=False, kv_cache_dtype=auto, quantization_param_path=None, device_config=cuda, decoding_config=DecodingConfig(guided_decoding_backend='outlines'), observability_config=ObservabilityConfig(otlp_traces_endpoint=None, collect_model_forward_time=False, collect_model_execute_time=False), seed=1, served_model_name=deepseek-ai/DeepSeek-Prover-V1.5-RL, num_scheduler_steps=1, chunked_prefill_enabled=False multi_step_stream_outputs=True, enable_prefix_caching=False, use_async_output_proc=True, use_cached_outputs=False, mm_processor_kwargs=None)
+WARNING 02-03 03:48:57 multiproc_gpu_executor.py:53] Reducing Torch parallelism from 192 threads to 1 to avoid unnecessary CPU contention. Set OMP_NUM_THREADS in the external environment to tune this value as needed.
+INFO 02-03 03:48:57 custom_cache_manager.py:17] Setting Triton cache manager to: vllm.triton_utils.custom_cache_manager:CustomCacheManager
+[1;36m(VllmWorkerProcess pid=3844998)[0;0m INFO 02-03 03:48:58 multiproc_worker_utils.py:215] Worker ready; awaiting tasks
+[1;36m(VllmWorkerProcess pid=3844996)[0;0m INFO 02-03 03:48:58 multiproc_worker_utils.py:215] Worker ready; awaiting tasks
+[1;36m(VllmWorkerProcess pid=3844997)[0;0m INFO 02-03 03:48:58 multiproc_worker_utils.py:215] Worker ready; awaiting tasks
+[1;36m(VllmWorkerProcess pid=3844996)[0;0m INFO 02-03 03:49:08 utils.py:1008] Found nccl from library libnccl.so.2
+INFO 02-03 03:49:08 utils.py:1008] Found nccl from library libnccl.so.2
+[1;36m(VllmWorkerProcess pid=3844998)[0;0m INFO 02-03 03:49:08 utils.py:1008] Found nccl from library libnccl.so.2
+[1;36m(VllmWorkerProcess pid=3844998)[0;0m INFO 02-03 03:49:08 pynccl.py:63] vLLM is using nccl==2.20.5
+INFO 02-03 03:49:08 pynccl.py:63] vLLM is using nccl==2.20.5
+[1;36m(VllmWorkerProcess pid=3844996)[0;0m INFO 02-03 03:49:08 pynccl.py:63] vLLM is using nccl==2.20.5
+[1;36m(VllmWorkerProcess pid=3844997)[0;0m INFO 02-03 03:49:08 utils.py:1008] Found nccl from library libnccl.so.2
+[1;36m(VllmWorkerProcess pid=3844997)[0;0m INFO 02-03 03:49:08 pynccl.py:63] vLLM is using nccl==2.20.5
+INFO 02-03 03:49:14 custom_all_reduce_utils.py:242] reading GPU P2P access cache from /home/wenjiema/.cache/vllm/gpu_p2p_access_cache_for_2,3,4,5.json
+[1;36m(VllmWorkerProcess pid=3844996)[0;0m INFO 02-03 03:49:14 custom_all_reduce_utils.py:242] reading GPU P2P access cache from /home/wenjiema/.cache/vllm/gpu_p2p_access_cache_for_2,3,4,5.json
+[1;36m(VllmWorkerProcess pid=3844997)[0;0m INFO 02-03 03:49:14 custom_all_reduce_utils.py:242] reading GPU P2P access cache from /home/wenjiema/.cache/vllm/gpu_p2p_access_cache_for_2,3,4,5.json
+[1;36m(VllmWorkerProcess pid=3844998)[0;0m INFO 02-03 03:49:14 custom_all_reduce_utils.py:242] reading GPU P2P access cache from /home/wenjiema/.cache/vllm/gpu_p2p_access_cache_for_2,3,4,5.json
+INFO 02-03 03:49:15 shm_broadcast.py:241] vLLM message queue communication handle: Handle(connect_ip='127.0.0.1', local_reader_ranks=[1, 2, 3], buffer=<vllm.distributed.device_communicators.shm_broadcast.ShmRingBuffer object at 0x7f9da4eadba0>, local_subscribe_port=35789, remote_subscribe_port=None)
+INFO 02-03 03:49:15 model_runner.py:1056] Starting to load model deepseek-ai/DeepSeek-Prover-V1.5-RL...
+[1;36m(VllmWorkerProcess pid=3844996)[0;0m INFO 02-03 03:49:15 model_runner.py:1056] Starting to load model deepseek-ai/DeepSeek-Prover-V1.5-RL...
+[1;36m(VllmWorkerProcess pid=3844997)[0;0m INFO 02-03 03:49:15 model_runner.py:1056] Starting to load model deepseek-ai/DeepSeek-Prover-V1.5-RL...
+[1;36m(VllmWorkerProcess pid=3844998)[0;0m INFO 02-03 03:49:15 model_runner.py:1056] Starting to load model deepseek-ai/DeepSeek-Prover-V1.5-RL...
+INFO 02-03 03:49:16 weight_utils.py:243] Using model weights format ['*.safetensors']
+[1;36m(VllmWorkerProcess pid=3844997)[0;0m INFO 02-03 03:49:16 weight_utils.py:243] Using model weights format ['*.safetensors']
+[1;36m(VllmWorkerProcess pid=3844998)[0;0m INFO 02-03 03:49:16 weight_utils.py:243] Using model weights format ['*.safetensors']
+[1;36m(VllmWorkerProcess pid=3844996)[0;0m INFO 02-03 03:49:16 weight_utils.py:243] Using model weights format ['*.safetensors']
+INFO 02-03 03:49:17 model_runner.py:1067] Loading model weights took 3.2632 GB
+[1;36m(VllmWorkerProcess pid=3844998)[0;0m INFO 02-03 03:49:18 model_runner.py:1067] Loading model weights took 3.2632 GB
+[1;36m(VllmWorkerProcess pid=3844996)[0;0m INFO 02-03 03:49:18 model_runner.py:1067] Loading model weights took 3.2632 GB
+[1;36m(VllmWorkerProcess pid=3844997)[0;0m INFO 02-03 03:49:18 model_runner.py:1067] Loading model weights took 3.2632 GB
+INFO 02-03 03:49:24 distributed_gpu_executor.py:57] # GPU blocks: 33201, # CPU blocks: 4369
+INFO 02-03 03:49:24 distributed_gpu_executor.py:61] Maximum concurrency for 4096 tokens per request: 129.69x
+INFO 02-03 03:49:37 model_runner.py:1395] Capturing the model for CUDA graphs. This may lead to unexpected consequences if the model is not static. To run the model in eager mode, set 'enforce_eager=True' or use '--enforce-eager' in the CLI.
+INFO 02-03 03:49:37 model_runner.py:1399] CUDA graphs can take additional 1~3 GiB memory per GPU. If you are running out of memory, consider decreasing `gpu_memory_utilization` or enforcing eager mode. You can also reduce the `max_num_seqs` as needed to decrease memory usage.
+[1;36m(VllmWorkerProcess pid=3844996)[0;0m INFO 02-03 03:49:37 model_runner.py:1395] Capturing the model for CUDA graphs. This may lead to unexpected consequences if the model is not static. To run the model in eager mode, set 'enforce_eager=True' or use '--enforce-eager' in the CLI.
+[1;36m(VllmWorkerProcess pid=3844996)[0;0m INFO 02-03 03:49:37 model_runner.py:1399] CUDA graphs can take additional 1~3 GiB memory per GPU. If you are running out of memory, consider decreasing `gpu_memory_utilization` or enforcing eager mode. You can also reduce the `max_num_seqs` as needed to decrease memory usage.
+[1;36m(VllmWorkerProcess pid=3844998)[0;0m INFO 02-03 03:49:38 model_runner.py:1395] Capturing the model for CUDA graphs. This may lead to unexpected consequences if the model is not static. To run the model in eager mode, set 'enforce_eager=True' or use '--enforce-eager' in the CLI.
+[1;36m(VllmWorkerProcess pid=3844997)[0;0m INFO 02-03 03:49:38 model_runner.py:1395] Capturing the model for CUDA graphs. This may lead to unexpected consequences if the model is not static. To run the model in eager mode, set 'enforce_eager=True' or use '--enforce-eager' in the CLI.
+[1;36m(VllmWorkerProcess pid=3844997)[0;0m INFO 02-03 03:49:38 model_runner.py:1399] CUDA graphs can take additional 1~3 GiB memory per GPU. If you are running out of memory, consider decreasing `gpu_memory_utilization` or enforcing eager mode. You can also reduce the `max_num_seqs` as needed to decrease memory usage.
+[1;36m(VllmWorkerProcess pid=3844998)[0;0m INFO 02-03 03:49:38 model_runner.py:1399] CUDA graphs can take additional 1~3 GiB memory per GPU. If you are running out of memory, consider decreasing `gpu_memory_utilization` or enforcing eager mode. You can also reduce the `max_num_seqs` as needed to decrease memory usage.
+[1;36m(VllmWorkerProcess pid=3844996)[0;0m INFO 02-03 03:49:57 custom_all_reduce.py:233] Registering 2135 cuda graph addresses
+[1;36m(VllmWorkerProcess pid=3844998)[0;0m INFO 02-03 03:49:57 custom_all_reduce.py:233] Registering 2135 cuda graph addresses
+[1;36m(VllmWorkerProcess pid=3844997)[0;0m INFO 02-03 03:49:57 custom_all_reduce.py:233] Registering 2135 cuda graph addresses
+INFO 02-03 03:49:57 custom_all_reduce.py:233] Registering 2135 cuda graph addresses
+[1;36m(VllmWorkerProcess pid=3844998)[0;0m INFO 02-03 03:49:57 model_runner.py:1523] Graph capturing finished in 20 secs.
+[1;36m(VllmWorkerProcess pid=3844997)[0;0m INFO 02-03 03:49:57 model_runner.py:1523] Graph capturing finished in 20 secs.
+INFO 02-03 03:49:57 model_runner.py:1523] Graph capturing finished in 21 secs.
+[1;36m(VllmWorkerProcess pid=3844996)[0;0m INFO 02-03 03:49:57 model_runner.py:1523] Graph capturing finished in 20 secs.
+Outputing to results/minif2f/pass_8/DSProver/full_records.json
+Outputing to results/minif2f/pass_8/DSProver/to_inference_codes.json
+ERROR 02-03 03:52:02 multiproc_worker_utils.py:116] Worker VllmWorkerProcess pid 3844996 died, exit code: -15
+INFO 02-03 03:52:02 multiproc_worker_utils.py:120] Killing local vLLM worker processes
+Complete launching 128 LeanServerProcesses
+TaskQueue-verifier:  1613 requests popped with avg batch_size 1.0 in last period  339 waiting in queue
+TaskQueue-verifier:  339 requests popped with avg batch_size 1.0 in last period  0 waiting in queue
+All 128 LeanServerProcesses stopped
