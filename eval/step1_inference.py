@@ -20,14 +20,12 @@ parser.add_argument('--split', default="none", type=str)
 parser.add_argument('--n', default=32, type=int)
 parser.add_argument('--gpu', default=1, type=int)
 
-api_model_path = ['openai/gpt-4o', 'openai/o1', 'openai/o1-mini']
+api_model_path = ['openai/gpt-4o', 'openai/o1', 'openai/o1-mini', 'openai/o3-mini-2025-01-31']
 
 
 # parser.add_argument('--output_path', default="example_data/o1_sorried_output.json", type=str)
 args = parser.parse_args()
 
-
-# data_path = "/scratch/gpfs/yl7690/projects/DeepSeek-Prover-V1.5/datasets/minif2f_sanity10.jsonl"
 data_path = args.input_path
 # Initialize an empty list to hold the dictionaries
 data_list = []
@@ -35,12 +33,7 @@ data_list = []
 # Open the file and read each line
 with open(data_path, 'r') as file:
     for line in file:
-        # Parse the JSON object and append it to the list
-        # if data_split is not None and prob['split'] not in data_split:
-        #     continue
         data = json.loads(line)
-        # if (data["split"] == args.split) or (args.split == "none"):
-        #     data_list.append(data)
         if args.split == "none":
             data_list.append(data)
         else:
@@ -60,7 +53,6 @@ LEAN4_DEFAULT_HEADER = "import Mathlib\nimport Aesop\n\nset_option maxHeartbeats
 
 model_inputs = []
 for data in data_list:
-        # model_inputs.append("Complete the following Lean 4 code with explanatory comments preceding each line of code:\n\n```lean4\n{header}\n/-{informal_prefix}-/ \n{formal_statement}".format(
         model_inputs.append("Complete the following Lean 4 code:\n\n```lean4\n{header}{informal_prefix}{formal_statement}".format(
                 header=data.get('header', LEAN4_DEFAULT_HEADER),
                 informal_prefix=data.get('informal_prefix', str()),
