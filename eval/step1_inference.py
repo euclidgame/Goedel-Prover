@@ -61,7 +61,7 @@ LEAN4_DEFAULT_HEADER = "import Mathlib\nimport Aesop\n\nset_option maxHeartbeats
 model_inputs = []
 for data in data_list:
         # model_inputs.append("Complete the following Lean 4 code with explanatory comments preceding each line of code:\n\n```lean4\n{header}\n/-{informal_prefix}-/ \n{formal_statement}".format(
-        model_inputs.append("Complete the following Lean 4 code by adding explanatory comments before each line to clarify its purpose. Ensure the code is wrapped in a proper Lean 4 code block for readability:\n\n```lean4\n{header}{informal_prefix}{formal_statement}".format(
+        model_inputs.append("Complete the following Lean 4 code:\n\n```lean4\n{header}{informal_prefix}{formal_statement}".format(
                 header=data.get('header', LEAN4_DEFAULT_HEADER),
                 informal_prefix=data.get('informal_prefix', str()),
                 formal_statement=data['formal_statement'],
@@ -75,24 +75,33 @@ def extract_code(inputs):
     try:
         return re.search(r'```(lean4|lean)\n(.*?)\n```', inputs, re.DOTALL).group(2)
     except AttributeError:
-        return "None"
+        return inputs
 
 if model_name in api_model_path:
     model_outputs = []
     def call_model(i):
         messages = [{"role": "user", "content": model_inputs[i]}]
-        response = completion(
-            model=model_name,
-            messages=messages,
-            n=args.n,
-        )
-        return [choice.message.content for choice in response.choices]
+        outputs = []
+        for _ in range(len(data_list)):
+            try:
+                response = completion(
+                    model=model_name,
+                    messages=messages,
+                    n=args.n,
+                    temperature=1.0,
+                )
+                outputs.extend([choice.message.content for choice in response.choices])
+            except Exception as e:
+                print(f"Error in model call for index {i}: {e}")
+                outputs.append(None)  # Placeholder for failed response
+
+        return outputs
     with concurrent.futures.ThreadPoolExecutor() as executor:
         results = list(executor.map(call_model, range(len(data_list))))
 
     model_outputs.extend(results)
     to_inference_codes = []
-    for i in range(len(data_list)):
+    for i in range(len(model_outputs)):
         data_list[i]["model_input"] = model_inputs[i]
         data_list[i]["model_outputs"] = model_outputs[i]
         data_list[i]["full_code"] = [extract_code(output) for output in model_outputs[i]]
