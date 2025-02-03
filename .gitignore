@@ -8,5 +8,5 @@ results
 *.ipynb
 *.json
 *.jsonl
-*.jsonl.gzg
-*.jsonl.gz.part
+*.jsonl.gzggit
+*.jsonl.gz.partg
