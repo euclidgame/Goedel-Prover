@@ -3,3 +3,4 @@ Godel-LM-local
 mathlib4
 results
 **/__pycache__/
+*.log
