@@ -3,7 +3,7 @@ MODEL_PATH=Goedel-LM/Goedel-Prover-SFT
 OUTPUT_DIR=results/minif2f/Godel-Prover-SFT
 SPLIT=test
 N=32
-CPU=128 #32
+CPU=128
 GPU=2
 FIELD=complete
 while getopts ":i:m:o:s:n:c:g:" opt; do

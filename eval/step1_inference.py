@@ -9,6 +9,8 @@ import json
 import argparse
 import concurrent.futures
 
+import logging
+logging.basicConfig(level=logging.INFO)
 parser = argparse.ArgumentParser()
 # /scratch/gpfs/yl7690/projects/DeepSeek-Prover-V1.5/datasets/minif2f.jsonl
 parser.add_argument('--input_path',  type=str)
@@ -22,8 +24,6 @@ parser.add_argument('--gpu', default=1, type=int)
 
 api_model_path = ['openai/gpt-4o', 'openai/o1', 'openai/o1-mini', 'openai/o3-mini-2025-01-31']
 
-
-# parser.add_argument('--output_path', default="example_data/o1_sorried_output.json", type=str)
 args = parser.parse_args()
 
 data_path = args.input_path
@@ -52,8 +52,9 @@ with open(data_path, 'r') as file:
 LEAN4_DEFAULT_HEADER = "import Mathlib\nimport Aesop\n\nset_option maxHeartbeats 0\n\nopen BigOperators Real Nat Topology Rat\n\n"
 
 model_inputs = []
+# data_list = data_list[:100]
 for data in data_list:
-        model_inputs.append("Complete the following Lean 4 code:\n\n```lean4\n{header}{informal_prefix}{formal_statement}".format(
+        model_inputs.append("Question: Complete the following Lean 4 code which contains header, informal prefix and formal statement. You will need to provide the proof for the formal statement. Please enclose your code within a Lean 4 code block.\n\n```lean4\n{header}{informal_prefix}{formal_statement}\n```\nAnswer:\n".format(
                 header=data.get('header', LEAN4_DEFAULT_HEADER),
                 informal_prefix=data.get('informal_prefix', str()),
                 formal_statement=data['formal_statement'],
@@ -61,32 +62,79 @@ for data in data_list:
         )
 
 model_name = args.model_path
-# model_name = "/scratch/gpfs/yl7690/projects/DeepSeek-Prover-V1.5/models/Translator_Qwen2.5-Coder-32B_numina_sonnet_130K_translator_Epoch2_LR1e-4"
 
-def extract_code(inputs):
+def extract_code(inputs, data):
+    if not isinstance(inputs, str):
+        logging.info(f"Inputs is not a string: {inputs}")
+        return "{header}\n\n{formal_statement}\n".format(
+            header=data.get('header', LEAN4_DEFAULT_HEADER), 
+            formal_statement=data.get('formal_statement', "-- ERROR: No formal statement found.")
+        )
+
     try:
-        return re.search(r'```(lean4|lean)\n(.*?)\n```', inputs, re.DOTALL).group(2)
-    except AttributeError:
-        return inputs
+        match = re.search(r'```(lean4|lean)\n(.*?)\n```', inputs, re.DOTALL)
+        if match:
+            return match.group(2).strip()  # Extract and strip whitespace
+
+        # If no match is found, return a default invalid Lean statement
+        return "{header}\n\n{formal_statement}\n".format(
+            header=data.get('header', LEAN4_DEFAULT_HEADER), 
+            formal_statement=data.get('formal_statement', "-- ERROR: No formal statement found.")
+        )
+
+    except Exception as e:
+        logging.info(f"Error in extract_code: {e}")
+        # Catch unexpected errors and return an invalid Lean statement
+        return "{header}\n\n{formal_statement}\n".format(
+            header=data.get('header', LEAN4_DEFAULT_HEADER), 
+            formal_statement=data.get('formal_statement', "-- ERROR: No formal statement found.")
+        )
+    
+CACHE_FILE = f"{args.output_dir}/model_outputs.json"
+    
+def save_outputs(cached_outputs):
+    with open(CACHE_FILE, 'w') as f:
+        json.dump(cached_outputs, f, indent=4)
+
+def load_cached_outputs():
+    """Load previously saved model outputs if they exist."""
+    if os.path.exists(CACHE_FILE):
+        with open(CACHE_FILE, 'r') as f:
+            try:
+                cached_data = json.load(f)
+                if isinstance(cached_data, list):
+                    return cached_data  # Ensure it's a list
+                else:
+                    logging.warning("Cache file content is not a list. Resetting cache.")
+                    return []
+            except json.JSONDecodeError:
+                logging.warning("Cache file is corrupted. Resetting cache.")
+                return []
+    return []  # Default to empty list
 
 if model_name in api_model_path:
+    cached_outputs = load_cached_outputs()
     model_outputs = []
     def call_model(i):
+        for cached_output in cached_outputs:
+            if data_list[i]['name'] == cached_output['name']:
+                return cached_output['model_outputs']
+        logging.info(f"Calling model for index {i}")
         messages = [{"role": "user", "content": model_inputs[i]}]
         outputs = []
-        for _ in range(len(data_list)):
-            try:
-                response = completion(
-                    model=model_name,
-                    messages=messages,
-                    n=args.n,
-                    temperature=1.0,
-                )
-                outputs.extend([choice.message.content for choice in response.choices])
-            except Exception as e:
-                print(f"Error in model call for index {i}: {e}")
-                outputs.append(None)  # Placeholder for failed response
-
+        try:
+            response = completion(
+                model=model_name,
+                messages=messages,
+                n=args.n,
+                temperature=1.0,
+            )
+            outputs.extend([choice.message.content for choice in response.choices])
+        except Exception as e:
+            print(f"Error in model call for index {i}: {e}")
+            outputs.append(None)  # Placeholder for failed response
+        cached_outputs.append({'name': data_list[i]['name'], 'model_outputs': outputs})
+        save_outputs(cached_outputs)
         return outputs
     with concurrent.futures.ThreadPoolExecutor() as executor:
         results = list(executor.map(call_model, range(len(data_list))))
@@ -96,16 +144,15 @@ if model_name in api_model_path:
     for i in range(len(model_outputs)):
         data_list[i]["model_input"] = model_inputs[i]
         data_list[i]["model_outputs"] = model_outputs[i]
-        data_list[i]["full_code"] = [extract_code(output) for output in model_outputs[i]]
+        # print(model_outputs[i])
+        data_list[i]["full_code"] = [extract_code(output, data_list[i]) for output in model_outputs[i]]
         if "problem_id" in data_list[i]:
             to_inference_codes += [{"name": data_list[i]["problem_id"], "code": code} for code in data_list[i]["full_code"]]
         else:
             to_inference_codes += [{"name": data_list[i]["name"], "code": code} for code in data_list[i]["full_code"]]
 else:
     tokenizer = AutoTokenizer.from_pretrained(model_name)
-    # model = LLM(model=model_name, max_num_batched_tokens=8192, seed=1, trust_remote_code=True, swap_space=8, tensor_parallel_size=args.gpu)
     model = LLM(model=model_name, seed=1, trust_remote_code=True, swap_space=8, tensor_parallel_size=args.gpu, max_model_len=4096)
-
 
     sampling_params = SamplingParams(
         temperature=1.0,
@@ -145,5 +192,4 @@ print(F"Outputing to {toinfer_file_path}")
 # Dump the list to a JSON file with indents
 with open(toinfer_file_path, 'w') as json_file:
     json.dump(to_inference_codes, json_file, indent=4)
-# for data
-#     model_outputs[0].outputs[0].text
+

@@ -1,7 +1,7 @@
 import json
 import sys
 
-sys.path.append("/scratch/gpfs/yl7690/projects/DeepSeek-Prover-V1.5")
+# sys.path.append("/scratch/gpfs/yl7690/projects/DeepSeek-Prover-V1.5")
 
 from prover.lean.verifier import Lean4ServerScheduler
 
