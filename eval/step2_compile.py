@@ -1,5 +1,6 @@
 import json
 import sys
+import logging
 
 # sys.path.append("/scratch/gpfs/yl7690/projects/DeepSeek-Prover-V1.5")
 
@@ -22,12 +23,14 @@ with open(input_file_path, 'r') as json_file:
     codes = json.load(json_file)
 
 lean4_scheduler = Lean4ServerScheduler(max_concurrent_requests=args.cpu, timeout=300, memory_limit=10, name='verifier')
-
+logging.info(f"Starting to compile {len(codes)} codes")
 request_id_list = lean4_scheduler.submit_all_request([code["code"] for code in codes])
+
 outputs_list = lean4_scheduler.get_all_request_outputs(request_id_list)
 lean4_scheduler.close()
 
 assert len(outputs_list) == len(codes)
+
 ana_result = []
 for i in range(len(codes)):
     codes[i]["compilation_result"] = outputs_list[i]

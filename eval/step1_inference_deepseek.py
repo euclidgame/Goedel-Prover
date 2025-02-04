@@ -2,7 +2,7 @@ import re
 from transformers import AutoTokenizer
 from vllm import LLM, SamplingParams
 
-from litellm import completion
+from together import Together
 import os
 
 import json
@@ -23,13 +23,17 @@ parser.add_argument('--n', default=32, type=int)
 parser.add_argument('--gpu', default=1, type=int)
 parser.add_argument('--subset', type=int, default=None)
 
-api_model_path = ['openai/gpt-4o', 'openai/o1', 'openai/o1-mini', 'openai/o3-mini-2025-01-31']
+together_api_path = ['deepseek-ai/DeepSeek-R1']
 
 args = parser.parse_args()
+
+assert args.model_path in together_api_path
 
 data_path = args.input_path
 # Initialize an empty list to hold the dictionaries
 data_list = []
+
+client = Together(api_key=os.environ["TOGETHER_API_KEY"])
 
 # Open the file and read each line
 with open(data_path, 'r') as file:
@@ -56,18 +60,12 @@ model_inputs = []
 if args.subset is not None:
     data_list = data_list[:args.subset]
 for data in data_list:
-        model_inputs.append("Question: Complete the following Lean 4 code which contains header, informal prefix and formal statement. You will need to provide the proof for the formal statement. Please reason step by step first and enclose your final code within a Lean 4 code block which starts with: \n```lean4\n{header}{informal_prefix}{formal_statement}\n```\nAnswer:\n".format(
+        model_inputs.append("Complete the following Lean 4 code with explanatory comments preceding each line of code:\n\n```lean4\n{header}{informal_prefix}{formal_statement}".format(
                 header=data.get('header', LEAN4_DEFAULT_HEADER),
                 informal_prefix=data.get('informal_prefix', str()),
                 formal_statement=data['formal_statement'],
             )
         )
-        # model_inputs.append("Complete the following Lean 4 code with explanatory comments preceding each line of code:\n\n```lean4\n{header}{informal_prefix}{formal_statement}".format(
-        #         header=data.get('header', LEAN4_DEFAULT_HEADER),
-        #         informal_prefix=data.get('informal_prefix', str()),
-        #         formal_statement=data['formal_statement'],
-        #     )
-        # )
 
 model_name = args.model_path
 
@@ -120,85 +118,55 @@ def load_cached_outputs():
                 return []
     return []  # Default to empty list
 
-if model_name in api_model_path:
-    cached_outputs = load_cached_outputs()
-    model_outputs = []
-    def call_model(i):
-        for cached_output in cached_outputs:
-            if data_list[i]['name'] == cached_output['name']:
-                if cached_output['model_outputs'][0] is not None:
-                    return cached_output['model_outputs']
-        logging.info(f"Calling model for index {i}")
-        messages = [{"role": "user", "content": model_inputs[i]}]
-        outputs = []
-        try:
-            response = completion(
-                model=model_name,
-                messages=messages,
-                n=args.n,
-                temperature=1.0,
-            )
-            outputs.extend([choice.message.content for choice in response.choices])
-        except Exception as e:
-            print(f"Error in model call for index {i}: {e}")
-            outputs.append(None)  # Placeholder for failed response
-        found = False
+cached_outputs = load_cached_outputs()
+model_outputs = []
+def call_model(i):
+    for cached_output in cached_outputs:
+        if data_list[i]['name'] == cached_output['name']:
+            if cached_output['model_outputs'][0] is not None:
+                return cached_output['model_outputs']
+    logging.info(f"Calling model for index {i}")
+    messages = [{"role": "user", "content": model_inputs[i]}]
+    outputs = []
+    try:
+        completion = client.chat.completions.create(
+            model=args.model_path,
+            messages=[{"role": "user", "content": model_inputs[i]}],
+            n=args.n,
+        )
+        outputs.extend([choice.message.content for choice in completion.choices])
+    except Exception as e:
+        print(f"Error in model call for index {i}: {e}")
+        outputs.append(None)  # Placeholder for failed response
+    found = False
 
-        for cached_output in cached_outputs:
-            if data_list[i]['name'] == cached_output['name']:
-                cached_output['model_outputs'] = outputs
-                found = True
-                break  # Stop looping once we find and update the entry
+    for cached_output in cached_outputs:
+        if data_list[i]['name'] == cached_output['name']:
+            cached_output['model_outputs'] = outputs
+            found = True
+            break  # Stop looping once we find and update the entry
 
-        if not found:
-            cached_outputs.append({'name': data_list[i]['name'], 'model_outputs': outputs})
-        save_outputs(cached_outputs)
-        return outputs
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = list(executor.map(call_model, range(len(data_list))))
+    if not found:
+        cached_outputs.append({'name': data_list[i]['name'], 'model_outputs': outputs})
+    save_outputs(cached_outputs)
+    return outputs
+with concurrent.futures.ThreadPoolExecutor() as executor:
+    results = list(executor.map(call_model, range(len(data_list))))
 
-    model_outputs.extend(results)
-    to_inference_codes = []
-    assert len(model_outputs) == len(data_list)
-    assert len(model_inputs) == len(data_list)
-    for i in range(len(model_outputs)):
-        data_list[i]["model_input"] = model_inputs[i]
-        data_list[i]["model_outputs"] = model_outputs[i]
-        # assert len(data_list[i]["model_outputs"]) == args.n, "Model outputs length is not equal to n for index {}: {}".format(i, data_list[i]["name"])
-        # print(model_outputs[i])
-        data_list[i]["full_code"] = [extract_code(output, data_list[i]) for output in model_outputs[i]]
-        if "problem_id" in data_list[i]:
-            to_inference_codes += [{"name": data_list[i]["problem_id"], "code": code} for code in data_list[i]["full_code"]]
-        else:
-            to_inference_codes += [{"name": data_list[i]["name"], "code": code} for code in data_list[i]["full_code"]]
-else:
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = LLM(model=model_name, seed=1, trust_remote_code=True, swap_space=8, tensor_parallel_size=args.gpu, max_model_len=4096)
-
-    sampling_params = SamplingParams(
-        temperature=1.0,
-        max_tokens=2048,
-        top_p=0.95,
-        n=args.n,
-    )
-
-    model_outputs = model.generate(
-        model_inputs,
-        sampling_params,
-        use_tqdm=True,
-    )
-
-    assert len(model_outputs) == len(model_inputs)
-
-    to_inference_codes = []
-    for i in range(len(data_list)):
-        data_list[i]["model_input"] = model_inputs[i]
-        data_list[i]["model_outputs"] = [output.text for output in model_outputs[i].outputs]
-        data_list[i]["full_code"] = [extract_code(model_inputs[i] + output.text) for output in model_outputs[i].outputs]
-        if "problem_id" in data_list[i]:
-            to_inference_codes += [{"name": data_list[i]["problem_id"], "code": code} for code in data_list[i]["full_code"]]
-        else:
-            to_inference_codes += [{"name": data_list[i]["name"], "code": code} for code in data_list[i]["full_code"]]
+model_outputs.extend(results)
+to_inference_codes = []
+assert len(model_outputs) == len(data_list)
+assert len(model_inputs) == len(data_list)
+for i in range(len(model_outputs)):
+    data_list[i]["model_input"] = model_inputs[i]
+    data_list[i]["model_outputs"] = model_outputs[i]
+    # assert len(data_list[i]["model_outputs"]) == args.n, "Model outputs length is not equal to n for index {}: {}".format(i, data_list[i]["name"])
+    # print(model_outputs[i])
+    data_list[i]["full_code"] = [extract_code(output, data_list[i]) for output in model_outputs[i]]
+    if "problem_id" in data_list[i]:
+        to_inference_codes += [{"name": data_list[i]["problem_id"], "code": code} for code in data_list[i]["full_code"]]
+    else:
+        to_inference_codes += [{"name": data_list[i]["name"], "code": code} for code in data_list[i]["full_code"]]
 
 os.makedirs(args.output_dir, exist_ok=True)
 
