@@ -23,6 +23,7 @@ def main():
     parser.add_argument("--field", type=str, default="complete", help="Field to use.")
     parser.add_argument("--subset", type=int, default=None, help="Subset to use.")
     parser.add_argument("--together", type=bool, default=False, help="Use together or not.")
+    parser.add_argument("--sample_path", type=str, default=None, help="Path to the sample file.")
     args = parser.parse_args()
 
     dataset_path = f"datasets/{args.dataset_name}.jsonl"
@@ -36,19 +37,28 @@ def main():
 
     print(f"Using output directory: {args.output_dir}")
 
-    if args.together:
+    if args.sample_path is not None:
         inference_command = (
-        f"python eval/step1_inference_deepseek.py --input_path {dataset_path} "
-            f"--model_path {args.model_name} --output_dir {args.output_dir} "
-            f"--split {args.split} --n {args.num_sampling} --gpu {args.ngpu} --subset {args.subset}"
+            f"python eval/step1_inference_sampling.py --output_dir {args.output_dir} --sample_path {args.sample_path} --n {args.num_sampling}"
         )
+        run_command(inference_command)
+    elif args.together:
+        inference_command = (
+            f"python eval/step1_inference_deepseek.py --input_path {dataset_path} "
+            f"--model_path {args.model_name} --output_dir {args.output_dir} "
+            f"--split {args.split} --n {args.num_sampling} --gpu {args.ngpu}"
+        )
+        if args.subset is not None:
+            inference_command += f" --subset {args.subset}"
         run_command(inference_command)  
     else:
         inference_command = (
             f"python eval/step1_inference.py --input_path {dataset_path} "
             f"--model_path {args.model_name} --output_dir {args.output_dir} "
-            f"--split {args.split} --n {args.num_sampling} --gpu {args.ngpu} --subset {args.subset}"
+            f"--split {args.split} --n {args.num_sampling} --gpu {args.ngpu}"
         )
+        if args.subset is not None:
+            inference_command += f" --subset {args.subset}"
         run_command(inference_command)
 
     compile_command = (

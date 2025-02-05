@@ -23,7 +23,7 @@ parser.add_argument('--n', default=32, type=int)
 parser.add_argument('--gpu', default=1, type=int)
 parser.add_argument('--subset', type=int, default=None)
 
-together_api_path = ['deepseek-ai/DeepSeek-R1']
+together_api_path = ['deepseek-ai/DeepSeek-R1', 'deepseek-ai/DeepSeek-V3']
 
 args = parser.parse_args()
 
@@ -80,8 +80,15 @@ def extract_code(inputs, data):
     try:
         match = re.search(r'```(lean4|lean)\n(.*?)\n```', inputs, re.DOTALL)
         if match:
-            return match.group(2).strip()  # Extract and strip whitespace
-
+            proof = match.group(2).strip()
+            if args.model_path == 'deepseek-ai/DeepSeek-R1':
+                return "{header}\n\n{formal_statement}\n".format(
+                    header=data.get('header', LEAN4_DEFAULT_HEADER), 
+                    formal_statement=proof  # Extract and strip whitespace
+                )
+            else:
+                return proof  # Extract and strip whitespace
+        logging.info(f"No match found in theorem: {data['name']}")
         # If no match is found, return a default invalid Lean statement
         return "{header}\n\n{formal_statement}\n".format(
             header=data.get('header', LEAN4_DEFAULT_HEADER), 
@@ -123,18 +130,24 @@ model_outputs = []
 def call_model(i):
     for cached_output in cached_outputs:
         if data_list[i]['name'] == cached_output['name']:
+            if len(cached_output['model_outputs']) != args.n:
+                logging.info(f"Model outputs length is not equal to n for index {i} in theorem: {data_list[i]['name']}")
+                logging.info(f"Model outputs length is: {len(cached_output['model_outputs'])}")
+                logging.info(f"N is: {args.n}")
             if cached_output['model_outputs'][0] is not None:
                 return cached_output['model_outputs']
     logging.info(f"Calling model for index {i}")
-    messages = [{"role": "user", "content": model_inputs[i]}]
     outputs = []
     try:
-        completion = client.chat.completions.create(
-            model=args.model_path,
-            messages=[{"role": "user", "content": model_inputs[i]}],
-            n=args.n,
-        )
-        outputs.extend([choice.message.content for choice in completion.choices])
+        for _ in range(4):
+            completion = client.chat.completions.create(
+                model=args.model_path,
+                messages=[{"role": "user", "content": model_inputs[i]}],
+                # n=args.n,
+                n=8,
+                temperature=0.7,
+            )
+            outputs.extend([choice.message.content for choice in completion.choices])
     except Exception as e:
         print(f"Error in model call for index {i}: {e}")
         outputs.append(None)  # Placeholder for failed response
@@ -162,6 +175,10 @@ for i in range(len(model_outputs)):
     data_list[i]["model_outputs"] = model_outputs[i]
     # assert len(data_list[i]["model_outputs"]) == args.n, "Model outputs length is not equal to n for index {}: {}".format(i, data_list[i]["name"])
     # print(model_outputs[i])
+    for output in model_outputs[i]:
+        if not isinstance(output, str):
+            logging.info(f"Output is not a string in theorem: {data_list[i]['name']}")
+            logging.info(f"Output is of type: {type(output)}")
     data_list[i]["full_code"] = [extract_code(output, data_list[i]) for output in model_outputs[i]]
     if "problem_id" in data_list[i]:
         to_inference_codes += [{"name": data_list[i]["problem_id"], "code": code} for code in data_list[i]["full_code"]]
