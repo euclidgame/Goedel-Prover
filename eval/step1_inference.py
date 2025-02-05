@@ -22,6 +22,7 @@ parser.add_argument('--split', default="none", type=str)
 parser.add_argument('--n', default=32, type=int)
 parser.add_argument('--gpu', default=1, type=int)
 parser.add_argument('--subset', type=int, default=None)
+parser.add_argument('--prompt_style', default="comments", type=str)
 
 api_model_path = ['openai/gpt-4o', 'openai/o1', 'openai/o1-mini', 'openai/o3-mini-2025-01-31']
 
@@ -56,18 +57,29 @@ model_inputs = []
 if args.subset is not None:
     data_list = data_list[:args.subset]
 for data in data_list:
+    if args.prompt_style == "think":
         model_inputs.append("Question: Complete the following Lean 4 code which contains header, informal prefix and formal statement. You will need to provide the proof for the formal statement. Please reason step by step first and enclose your final code within a Lean 4 code block which starts with: \n```lean4\n{header}{informal_prefix}{formal_statement}\n```\nAnswer:\n".format(
                 header=data.get('header', LEAN4_DEFAULT_HEADER),
                 informal_prefix=data.get('informal_prefix', str()),
                 formal_statement=data['formal_statement'],
             )
         )
-        # model_inputs.append("Complete the following Lean 4 code with explanatory comments preceding each line of code:\n\n```lean4\n{header}{informal_prefix}{formal_statement}".format(
-        #         header=data.get('header', LEAN4_DEFAULT_HEADER),
-        #         informal_prefix=data.get('informal_prefix', str()),
-        #         formal_statement=data['formal_statement'],
-        #     )
-        # )
+    elif args.prompt_style == "comments":
+        model_inputs.append("Complete the following Lean 4 code with explanatory comments preceding each line of code:\n\n```lean4\n{header}{informal_prefix}{formal_statement}".format(
+                header=data.get('header', LEAN4_DEFAULT_HEADER),
+                informal_prefix=data.get('informal_prefix', str()),
+                formal_statement=data['formal_statement'],
+            )
+        )
+    elif args.prompt_style == "plain":
+        model_inputs.append("Complete the following Lean 4 code:\n\n```lean4\n{header}{informal_prefix}{formal_statement}".format(
+                header=data.get('header', LEAN4_DEFAULT_HEADER),
+                informal_prefix=data.get('informal_prefix', str()),
+                formal_statement=data['formal_statement'],
+            )
+        )
+    else:
+        raise ValueError(f"Invalid prompt style: {args.prompt_style}")
 
 model_name = args.model_path
 
@@ -194,7 +206,7 @@ else:
     for i in range(len(data_list)):
         data_list[i]["model_input"] = model_inputs[i]
         data_list[i]["model_outputs"] = [output.text for output in model_outputs[i].outputs]
-        data_list[i]["full_code"] = [extract_code(model_inputs[i] + output.text) for output in model_outputs[i].outputs]
+        data_list[i]["full_code"] = [extract_code(model_inputs[i] + output.text, data_list[i]) for output in model_outputs[i].outputs]
         if "problem_id" in data_list[i]:
             to_inference_codes += [{"name": data_list[i]["problem_id"], "code": code} for code in data_list[i]["full_code"]]
         else:
