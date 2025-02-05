@@ -78,6 +78,13 @@ for data in data_list:
                 formal_statement=data['formal_statement'],
             )
         )
+    elif args.prompt_style == "no_comments":
+        model_inputs.append("Complete the following Lean 4 code without any comments or explanations:\n\n```lean4\n{header}{informal_prefix}{formal_statement}".format(
+                header=data.get('header', LEAN4_DEFAULT_HEADER),
+                informal_prefix=data.get('informal_prefix', str()),
+                formal_statement=data['formal_statement'],
+            )
+        )
     else:
         raise ValueError(f"Invalid prompt style: {args.prompt_style}")
 
