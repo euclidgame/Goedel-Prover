@@ -4,3 +4,4 @@ mathlib4
 results
 **/__pycache__/
 *.log
+run_sequential.sh
