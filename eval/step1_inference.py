@@ -79,7 +79,7 @@ for data in data_list:
             )
         )
     elif args.prompt_style == "no_comments":
-        model_inputs.append("Complete the following Lean 4 code without any comments or explanations:\n\n```lean4\n{header}{informal_prefix}{formal_statement}".format(
+        model_inputs.append("Complete the following Lean 4 code without any comments or explanations in the code:\n\n```lean4\n{header}{informal_prefix}{formal_statement}".format(
                 header=data.get('header', LEAN4_DEFAULT_HEADER),
                 informal_prefix=data.get('informal_prefix', str()),
                 formal_statement=data['formal_statement'],
@@ -101,9 +101,11 @@ def extract_code(inputs, data):
     try:
         match = re.search(r'```(lean4|lean)\n(.*?)\n```', inputs, re.DOTALL)
         if match:
+            logging.info(f"Match found!!!")
             return match.group(2).strip()  # Extract and strip whitespace
 
         # If no match is found, return a default invalid Lean statement
+        logging.info(f"No match found in {inputs}")
         return "{header}\n\n{formal_statement}\n".format(
             header=data.get('header', LEAN4_DEFAULT_HEADER), 
             formal_statement=data.get('formal_statement', "-- ERROR: No formal statement found.")

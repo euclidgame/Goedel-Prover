@@ -24,17 +24,14 @@ def main():
     parser.add_argument("--subset", type=int, default=None, help="Subset to use.")
     parser.add_argument("--together", type=bool, default=False, help="Use together or not.")
     parser.add_argument("--sample_path", type=str, default=None, help="Path to the sample file.")
-    parser.add_argument("--prompt_style", type=str, default=None, help="Prompt style to use.")
+    parser.add_argument("--prompt_style", type=str, default="comments", help="Prompt style to use.")
     args = parser.parse_args()
 
     dataset_path = f"datasets/{args.dataset_name}.jsonl"
 
     # Auto-generate output_dir if not provided
     if args.output_dir is None:
-        if args.prompt_style == "plain":
-            args.output_dir = f"results/pass_at_{args.num_sampling}/{args.dataset_name}/{args.model_name}/{args.prompt_style}"
-        else:
-            args.output_dir = f"results/pass_at_{args.num_sampling}/{args.dataset_name}/{args.model_name}"
+        args.output_dir = f"results/pass_at_{args.num_sampling}/{args.dataset_name}/{args.model_name}/{args.prompt_style}"
 
     # Ensure the output directory exists
     os.makedirs(args.output_dir, exist_ok=True)
