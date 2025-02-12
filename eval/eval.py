@@ -1,13 +1,16 @@
 import argparse
 import os
 import subprocess
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 def run_command(command):
     """Runs a shell command and ensures it executes successfully."""
-    print(f"Running: {command}")
+    logging.info(f"Running: {command}")
     result = subprocess.run(command, shell=True)
     if result.returncode != 0:
-        print(f"Error: Command failed: {command}")
+        logging.error(f"Error: Command failed: {command}")
         exit(1)
 
 def main():
@@ -25,18 +28,19 @@ def main():
     parser.add_argument("--together", type=bool, default=False, help="Use together or not.")
     parser.add_argument("--sample_path", type=str, default=None, help="Path to the sample file.")
     parser.add_argument("--prompt_style", type=str, default="comments", help="Prompt style to use.")
+    parser.add_argument("--base_url", type=str, required=True, help="Base URL to use.")
     args = parser.parse_args()
 
     dataset_path = f"datasets/{args.dataset_name}.jsonl"
 
     # Auto-generate output_dir if not provided
     if args.output_dir is None:
-        args.output_dir = f"results/pass_at_{args.num_sampling}/{args.dataset_name}/{args.model_name}/{args.prompt_style}"
+        args.output_dir = f"new_results/pass_at_{args.num_sampling}/{args.dataset_name}/{args.model_name}/{args.prompt_style}"
 
     # Ensure the output directory exists
     os.makedirs(args.output_dir, exist_ok=True)
 
-    print(f"Using output directory: {args.output_dir}")
+    logging.info(f"Using output directory: {args.output_dir}")
 
     if args.sample_path is not None:
         inference_command = (
@@ -53,11 +57,18 @@ def main():
             inference_command += f" --subset {args.subset}"
         run_command(inference_command)  
     else:
-        inference_command = (
-            f"python eval/step1_inference.py --input_path {dataset_path} "
-            f"--model_path {args.model_name} --output_dir {args.output_dir} "
-            f"--split {args.split} --n {args.num_sampling} --gpu {args.ngpu}"
-        )
+        if args.prompt_style == "think":
+            inference_command = (
+                f"python eval/step1_inference_temp.py --input_path {dataset_path} "
+                f"--model_path {args.model_name} --output_dir {args.output_dir} "
+                f"--split {args.split} --n {args.num_sampling} --gpu {args.ngpu} --base_url {args.base_url}"
+            )
+        else:
+            inference_command = (
+                f"python eval/step1_inference.py --input_path {dataset_path} "
+                f"--model_path {args.model_name} --output_dir {args.output_dir} "
+                f"--split {args.split} --n {args.num_sampling} --gpu {args.ngpu} --base_url {args.base_url}"
+            )
         if args.subset is not None:
             inference_command += f" --subset {args.subset}"
         if args.prompt_style is not None:

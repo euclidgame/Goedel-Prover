@@ -59,7 +59,7 @@ if args.subset is not None:
     data_list = data_list[:args.subset]
 for data in data_list:
     if args.prompt_style == "think":
-        model_inputs.append("Question: Complete the following Lean 4 code which contains header, informal prefix and formal statement. You will need to provide the proof for the formal statement. Please reason step by step first and enclose your final code within a Lean 4 code block which starts with: \n```lean4\n{header}{informal_prefix}{formal_statement}\n```\nAnswer:\n<think>\n".format(
+        model_inputs.append("Question:\nComplete the following Lean 4 code which contains header, informal prefix and formal statement. You will need to provide the proof for the formal statement. Please reason step by step first and wrap your thinking process within \"<think>\\n\\n</think>\" and enclose your final code within a Lean 4 code block which starts with: \n```lean4\n{header}{informal_prefix}{formal_statement}\n```\n\nAnswer:\n<think>\n".format(
                 header=data.get('header', LEAN4_DEFAULT_HEADER),
                 informal_prefix=data.get('informal_prefix', str()),
                 formal_statement=data['formal_statement'],
@@ -86,13 +86,6 @@ for data in data_list:
                 formal_statement=data['formal_statement'],
             )
         )
-    elif args.prompt_style == "few_shot_no_comments":
-        model_inputs.append("Complete the following Lean 4 code WITHOUT ANY comments or explanations in the code. That means your code should have similar style as the following examples:\n\nExample 1:\n```lean4\ntheorem mathd_algebra_182 (y : \u2102) : 7 * (3 * y + 2) = 21 * y + 14 := by\n  simp [mul_add, mul_comm, mul_left_comm]\n  ring_nf\n```\n\nExample 2:\n```lean4\ntheorem mathd_algebra_182 (y : \u2102) : 7 * (3 * y + 2) = 21 * y + 14 := by\n  norm_num\n  ring\n  <;> linarith\n```\n\nNow, complete the following Lean 4 code WITHOUT ANY comments or explanations in the code.:\n\n```lean4\n{header}{informal_prefix}{formal_statement}".format(
-                header=data.get('header', LEAN4_DEFAULT_HEADER),
-                informal_prefix=data.get('informal_prefix', str()),
-                formal_statement=data['formal_statement'],
-            )
-        )
     else:
         raise ValueError(f"Invalid prompt style: {args.prompt_style}")
 
@@ -107,16 +100,15 @@ def extract_code(inputs, data):
         )
 
     try:
-        if args.prompt_style == "few_shot_no_comments":
-            matches = list(re.finditer(r'```(lean4|lean)\n(.*?)\n```', inputs, re.DOTALL))
-            if len(matches) >= 3:
-                return matches[2].group(2).strip()  # Extract and strip whitespace
         match = re.search(r'```(lean4|lean)\n(.*?)\n```', inputs, re.DOTALL)
+        proof = data.get('formal_statement', "-- ERROR: No formal statement found.")
         if match:
-            return match.group(2).strip()  # Extract and strip whitespace
+            proof = match.group(2).strip()  # Extract and strip whitespace
+            if proof.startswith("import"):
+                return proof
         return "{header}\n\n{formal_statement}\n".format(
             header=data.get('header', LEAN4_DEFAULT_HEADER), 
-            formal_statement=data.get('formal_statement', "-- ERROR: No formal statement found.")
+            formal_statement=proof
         )
 
     except Exception as e:
@@ -127,7 +119,7 @@ def extract_code(inputs, data):
             formal_statement=data.get('formal_statement', "-- ERROR: No formal statement found.")
         )
     
-CACHE_FILE = f"{args.output_dir}/model_outputs.json"
+CACHE_FILE = f"{args.output_dir}/full_records.json"
     
 def save_outputs(cached_outputs):
     with open(CACHE_FILE, 'w') as f:
@@ -149,101 +141,52 @@ def load_cached_outputs():
                 return []
     return []  # Default to empty list
 
-if model_name in api_model_path:
-    cached_outputs = load_cached_outputs()
-    model_outputs = []
-    def call_model(i):
-        for cached_output in cached_outputs:
-            if data_list[i]['name'] == cached_output['name']:
-                if cached_output['model_outputs'][0] is not None:
-                    return cached_output['model_outputs']
-        logging.info(f"Calling model for index {i}")
-        messages = [{"role": "user", "content": model_inputs[i]}]
-        outputs = []
-        try:
-            response = completion(
-                model=model_name,
-                messages=messages,
-                n=args.n,
-                temperature=1.0,
-            )
-            outputs.extend([choice.message.content for choice in response.choices])
-        except Exception as e:
-            print(f"Error in model call for index {i}: {e}")
-            outputs.append(None)  # Placeholder for failed response
-        found = False
-
-        for cached_output in cached_outputs:
-            if data_list[i]['name'] == cached_output['name']:
-                cached_output['model_outputs'] = outputs
-                found = True
-                break  # Stop looping once we find and update the entry
-
-        if not found:
-            cached_outputs.append({'name': data_list[i]['name'], 'model_outputs': outputs})
-        save_outputs(cached_outputs)
-        return outputs
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = list(executor.map(call_model, range(len(data_list))))
-
-    model_outputs.extend(results)
-    to_inference_codes = []
-    assert len(model_outputs) == len(data_list)
-    assert len(model_inputs) == len(data_list)
-    for i in range(len(model_outputs)):
-        data_list[i]["model_input"] = model_inputs[i]
-        data_list[i]["model_outputs"] = model_outputs[i]
-        # assert len(data_list[i]["model_outputs"]) == args.n, "Model outputs length is not equal to n for index {}: {}".format(i, data_list[i]["name"])
-        # print(model_outputs[i])
-        data_list[i]["full_code"] = [extract_code(output, data_list[i]) for output in model_outputs[i]]
-        if "problem_id" in data_list[i]:
-            to_inference_codes += [{"name": data_list[i]["problem_id"], "code": code} for code in data_list[i]["full_code"]]
-        else:
-            to_inference_codes += [{"name": data_list[i]["name"], "code": code} for code in data_list[i]["full_code"]]
-else:
-    client = OpenAI(
-        # defaults to os.environ.get("OPENAI_API_KEY")
-        api_key=os.environ.get("OPENAI_API_KEY"),
-        base_url=args.base_url,
+client = OpenAI(
+    # defaults to os.environ.get("OPENAI_API_KEY")
+    api_key=os.environ.get("OPENAI_API_KEY"),
+    base_url=args.base_url,
+)
+models = client.models.list()
+model = models.data[0].id
+model_outputs = []
+token_usage = []
+def call_model(i):
+    outputs = []
+    response = client.completions.create(
+        model=model,
+        # messages=[{"role": "user", "content": model_inputs[i]}],
+        prompt=model_inputs[i],
+        max_tokens=8192,
+        temperature=0.6,
+        n=args.n,
     )
-    models = client.models.list()
-    model = models.data[0].id
-    model_outputs = []
-    token_usage = []
-    def call_model(i):
-        outputs = []
-        response = client.completions.create(
-            model=model,
-            prompt=model_inputs[i],
-            max_tokens=2048,
-            n=args.n,
-            stop="\n```"
-        )
-        outputs.extend([choice.text + "\n```" for choice in response.choices])
-        return outputs, response.usage
+    outputs.extend([choice.text for choice in response.choices])
+    return outputs, response.usage
 
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = list(executor.map(call_model, range(len(data_list))))
+with concurrent.futures.ThreadPoolExecutor() as executor:
+    results = list(executor.map(call_model, range(len(data_list))))
 
-    model_outputs.extend([result[0] for result in results])
-    token_usage.extend([result[1] for result in results])
-    assert len(model_outputs) == len(model_inputs)
-    to_inference_codes = []
-    for i in range(len(data_list)):
-        data_list[i]["model_input"] = model_inputs[i]
-        data_list[i]["model_outputs"] = model_outputs[i]
-        data_list[i]["full_code"] = [extract_code(model_inputs[i] + output, data_list[i]) for output in model_outputs[i]]
-        data_list[i]["token_usage"] = token_usage[i].completion_tokens / args.n
-        if "problem_id" in data_list[i]:
-            to_inference_codes += [{"name": data_list[i]["problem_id"], "code": code} for code in data_list[i]["full_code"]]
-        else:
-            to_inference_codes += [{"name": data_list[i]["name"], "code": code} for code in data_list[i]["full_code"]]
+model_outputs.extend([result[0] for result in results])
+token_usage.extend([result[1] for result in results])
+assert len(model_outputs) == len(model_inputs)
+to_inference_codes = []
+for i in range(len(data_list)):
+    data_list[i]["model_input"] = model_inputs[i]
+    data_list[i]["model_outputs"] = model_outputs[i]
+    data_list[i]["full_code"] = [extract_code(output, data_list[i]) for output in model_outputs[i]]
+    data_list[i]["token_usage"] = token_usage[i].completion_tokens / args.n
+    if "problem_id" in data_list[i]:
+        to_inference_codes += [{"name": data_list[i]["problem_id"], "code": code} for code in data_list[i]["full_code"]]
+    else:
+        to_inference_codes += [{"name": data_list[i]["name"], "code": code} for code in data_list[i]["full_code"]]
 
 os.makedirs(args.output_dir, exist_ok=True)
 
-output_file_path = F'{args.output_dir}/full_records.json'
 total_token_usage = sum([data_list[i]["token_usage"] for i in range(len(data_list))])
+
 logging.info(f"Average token usage: {total_token_usage / len(data_list)}")
+
+output_file_path = F'{args.output_dir}/full_records.json'
 print(F"Outputing to {output_file_path}")
 # Dump the list to a JSON file with indents
 with open(output_file_path, 'w') as json_file:
