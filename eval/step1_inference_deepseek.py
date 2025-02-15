@@ -22,8 +22,9 @@ parser.add_argument('--split', default="none", type=str)
 parser.add_argument('--n', default=32, type=int)
 parser.add_argument('--gpu', default=1, type=int)
 parser.add_argument('--subset', type=int, default=None)
+parser.add_argument('--prompt_style', type=str, default="comments")
 
-together_api_path = ['deepseek-ai/DeepSeek-R1', 'deepseek-ai/DeepSeek-V3']
+together_api_path = ['deepseek-ai/DeepSeek-R1', 'deepseek-ai/DeepSeek-V3', 'deepseek-ai/DeepSeek-R1-Distill-Qwen-14B']
 
 args = parser.parse_args()
 
@@ -60,12 +61,20 @@ model_inputs = []
 if args.subset is not None:
     data_list = data_list[:args.subset]
 for data in data_list:
-        model_inputs.append("Complete the following Lean 4 code with explanatory comments preceding each line of code:\n\n```lean4\n{header}{informal_prefix}{formal_statement}".format(
-                header=data.get('header', LEAN4_DEFAULT_HEADER),
-                informal_prefix=data.get('informal_prefix', str()),
-                formal_statement=data['formal_statement'],
+        if args.prompt_style == "think":
+            model_inputs.append("Question:\nComplete the following Lean 4 code which contains header, informal prefix and formal statement. You will need to provide the proof for the formal statement. Please reason step by step first and wrap your thinking process within \"<think>\\n\\n</think>\" and enclose your final code within a Lean 4 code block which starts with: \n```lean4\n{header}{informal_prefix}{formal_statement}\n```\n\nAnswer:\n<think>\n".format(
+                    header=data.get('header', LEAN4_DEFAULT_HEADER),
+                    informal_prefix=data.get('informal_prefix', str()),
+                    formal_statement=data['formal_statement'],
+                )
             )
-        )
+        else:
+            model_inputs.append("Complete the following Lean 4 code with explanatory comments preceding each line of code:\n\n```lean4\n{header}{informal_prefix}{formal_statement}".format(
+                    header=data.get('header', LEAN4_DEFAULT_HEADER),
+                    informal_prefix=data.get('informal_prefix', str()),
+                    formal_statement=data['formal_statement'],
+                )
+            )
 
 model_name = args.model_path
 
@@ -127,6 +136,7 @@ def load_cached_outputs():
 
 cached_outputs = load_cached_outputs()
 model_outputs = []
+token_usage = []
 def call_model(i):
     for cached_output in cached_outputs:
         if data_list[i]['name'] == cached_output['name']:
@@ -138,6 +148,7 @@ def call_model(i):
                 return cached_output['model_outputs']
     logging.info(f"Calling model for index {i}")
     outputs = []
+    usage = None
     try:
         for _ in range(4):
             completion = client.chat.completions.create(
@@ -148,6 +159,7 @@ def call_model(i):
                 temperature=0.7,
             )
             outputs.extend([choice.message.content for choice in completion.choices])
+            usage = completion.usage
     except Exception as e:
         print(f"Error in model call for index {i}: {e}")
         outputs.append(None)  # Placeholder for failed response
@@ -162,17 +174,19 @@ def call_model(i):
     if not found:
         cached_outputs.append({'name': data_list[i]['name'], 'model_outputs': outputs})
     save_outputs(cached_outputs)
-    return outputs
+    return outputs, usage
 with concurrent.futures.ThreadPoolExecutor() as executor:
     results = list(executor.map(call_model, range(len(data_list))))
 
-model_outputs.extend(results)
+model_outputs.extend([result[0] for result in results])
+token_usage.extend([result[1] for result in results])
 to_inference_codes = []
 assert len(model_outputs) == len(data_list)
 assert len(model_inputs) == len(data_list)
 for i in range(len(model_outputs)):
     data_list[i]["model_input"] = model_inputs[i]
     data_list[i]["model_outputs"] = model_outputs[i]
+    data_list[i]["token_usage"] = token_usage[i].completion_tokens / args.n
     # assert len(data_list[i]["model_outputs"]) == args.n, "Model outputs length is not equal to n for index {}: {}".format(i, data_list[i]["name"])
     # print(model_outputs[i])
     for output in model_outputs[i]:
@@ -186,6 +200,9 @@ for i in range(len(model_outputs)):
         to_inference_codes += [{"name": data_list[i]["name"], "code": code} for code in data_list[i]["full_code"]]
 
 os.makedirs(args.output_dir, exist_ok=True)
+
+total_token_usage = sum([data_list[i]["token_usage"] for i in range(len(data_list))])
+logging.info(f"Average token usage: {total_token_usage / len(data_list)}")
 
 output_file_path = F'{args.output_dir}/full_records.json'
 print(F"Outputing to {output_file_path}")

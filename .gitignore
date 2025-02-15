@@ -10,3 +10,7 @@ results
 *.jsonl
 *.jsonl.gzggit
 *.jsonl.gz.partg
+new_results
+token_results
+Qwen2.5-32B/
+Qwen2.5-32B-proofnet/

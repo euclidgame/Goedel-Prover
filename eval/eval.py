@@ -19,7 +19,7 @@ def main():
     parser.add_argument("--model_name", type=str, required=True, help="Name of the model.")
     parser.add_argument("--dataset_name", type=str, default="minif2f", help="Name of the dataset.")
     parser.add_argument("--num_sampling", type=int, required=True, help="Number of sampling iterations.")
-    parser.add_argument("--output_dir", type=str, default=None, help="Directory to save output files.")
+    parser.add_argument("--output_dir", type=str, default="results", help="Directory to save output files.")
     parser.add_argument("--ngpu", type=int, default=2, help="Number of GPUs to use.")
     parser.add_argument("--ncpu", type=int, default=128, help="Number of CPUs to use.")
     parser.add_argument("--split", type=str, default="test", help="Split to use.")
@@ -34,8 +34,7 @@ def main():
     dataset_path = f"datasets/{args.dataset_name}.jsonl"
 
     # Auto-generate output_dir if not provided
-    if args.output_dir is None:
-        args.output_dir = f"new_results/pass_at_{args.num_sampling}/{args.dataset_name}/{args.model_name}/{args.prompt_style}"
+    args.output_dir = f"{args.output_dir}/pass_at_{args.num_sampling}/{args.dataset_name}/{args.model_name}/{args.prompt_style}"
 
     # Ensure the output directory exists
     os.makedirs(args.output_dir, exist_ok=True)
@@ -57,18 +56,11 @@ def main():
             inference_command += f" --subset {args.subset}"
         run_command(inference_command)  
     else:
-        if args.prompt_style == "think":
-            inference_command = (
-                f"python eval/step1_inference_temp.py --input_path {dataset_path} "
-                f"--model_path {args.model_name} --output_dir {args.output_dir} "
-                f"--split {args.split} --n {args.num_sampling} --gpu {args.ngpu} --base_url {args.base_url}"
-            )
-        else:
-            inference_command = (
-                f"python eval/step1_inference.py --input_path {dataset_path} "
-                f"--model_path {args.model_name} --output_dir {args.output_dir} "
-                f"--split {args.split} --n {args.num_sampling} --gpu {args.ngpu} --base_url {args.base_url}"
-            )
+        inference_command = (
+            f"python eval/step1_inference.py --input_path {dataset_path} "
+            f"--model_path {args.model_name} --output_dir {args.output_dir} "
+            f"--split {args.split} --n {args.num_sampling} --base_url {args.base_url}"
+        )
         if args.subset is not None:
             inference_command += f" --subset {args.subset}"
         if args.prompt_style is not None:
